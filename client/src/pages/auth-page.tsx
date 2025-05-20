@@ -75,19 +75,19 @@ export default function AuthPage() {
           <div className="w-full md:w-1/2">
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Create Account</TabsTrigger>
+                <TabsTrigger value="login" className="data-[state=active]:bg-[#CD1B32] data-[state=active]:text-white">Login</TabsTrigger>
+                <TabsTrigger value="register" className="data-[state=active]:bg-[#CD1B32] data-[state=active]:text-white">Create Account</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <LogIn className="h-5 w-5 text-primary" />
+                      <LogIn className="h-5 w-5 text-[#CD1B32]" />
                       <span>Login to Your Account</span>
                     </CardTitle>
                     <CardDescription>
-                      Access your GolfTrackPro device and settings
+                      Access your CLM PRO device and settings
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -100,7 +100,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Username</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your username" {...field} />
+                                <Input placeholder="Your username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -114,7 +114,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                <Input type="password" placeholder="Your password" {...field} />
+                                <Input type="password" placeholder="Your password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -123,19 +123,19 @@ export default function AuthPage() {
                         
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            <Checkbox id="remember" />
-                            <label htmlFor="remember" className="text-sm text-neutral-600">
+                            <Checkbox id="remember" className="border-[#D3D5D9] data-[state=checked]:bg-[#CD1B32] data-[state=checked]:border-[#CD1B32]" />
+                            <label htmlFor="remember" className="text-sm text-[#5C616B]">
                               Remember me
                             </label>
                           </div>
-                          <a href="#" className="text-sm text-primary hover:underline">
+                          <a href="#" className="text-sm text-[#CD1B32] hover:text-[#DD393A]">
                             Forgot password?
                           </a>
                         </div>
                         
                         <Button
                           type="submit"
-                          className="w-full bg-primary hover:bg-primary/90 text-white"
+                          className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
                           disabled={loginMutation.isPending}
                         >
                           {loginMutation.isPending ? "Logging in..." : "Login"}
@@ -150,11 +150,11 @@ export default function AuthPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <UserPlus className="h-5 w-5 text-primary" />
+                      <UserPlus className="h-5 w-5 text-[#CD1B32]" />
                       <span>Create Your Account</span>
                     </CardTitle>
                     <CardDescription>
-                      Get started with your GolfTrackPro device
+                      Get started with your CLM PRO device
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -167,7 +167,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="your@email.com" {...field} />
+                                <Input placeholder="your@email.com" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -181,7 +181,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Username</FormLabel>
                               <FormControl>
-                                <Input placeholder="Choose a username" {...field} />
+                                <Input placeholder="Choose a username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -195,7 +195,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                <Input type="password" placeholder="Create a password" {...field} />
+                                <Input type="password" placeholder="Create a password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormDescription>
                                 Must be at least 8 characters
@@ -212,7 +212,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Full Name</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your name" {...field} />
+                                <Input placeholder="Your name" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -220,9 +220,9 @@ export default function AuthPage() {
                         />
                         
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="terms" required />
-                          <label htmlFor="terms" className="text-sm text-neutral-600">
-                            I agree to the <a href="#" className="text-primary">Terms of Service</a> and <a href="#" className="text-primary">Privacy Policy</a>
+                          <Checkbox id="terms" required className="border-[#D3D5D9] data-[state=checked]:bg-[#CD1B32] data-[state=checked]:border-[#CD1B32]" />
+                          <label htmlFor="terms" className="text-sm text-[#5C616B]">
+                            I agree to the <a href="#" className="text-[#CD1B32] hover:text-[#DD393A]">Terms of Service</a> and <a href="#" className="text-[#CD1B32] hover:text-[#DD393A]">Privacy Policy</a>
                           </label>
                         </div>
                         
@@ -236,9 +236,10 @@ export default function AuthPage() {
                                   id="updates"
                                   checked={field.value}
                                   onCheckedChange={field.onChange}
+                                  className="border-[#D3D5D9] data-[state=checked]:bg-[#CD1B32] data-[state=checked]:border-[#CD1B32]"
                                 />
                               </FormControl>
-                              <label htmlFor="updates" className="text-sm text-neutral-600">
+                              <label htmlFor="updates" className="text-sm text-[#5C616B]">
                                 Send me product updates and news
                               </label>
                             </FormItem>
@@ -247,7 +248,7 @@ export default function AuthPage() {
                         
                         <Button
                           type="submit"
-                          className="w-full bg-primary hover:bg-primary/90 text-white"
+                          className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
                           disabled={registerMutation.isPending}
                         >
                           {registerMutation.isPending ? "Creating Account..." : "Create Account"}
@@ -261,37 +262,37 @@ export default function AuthPage() {
           </div>
           
           {/* Right: Hero Image */}
-          <div className="w-full md:w-1/2 bg-neutral-800 rounded-lg p-8 flex flex-col justify-between">
+          <div className="w-full md:w-1/2 bg-[#323438] rounded-lg p-8 flex flex-col justify-between">
             <div>
               <div className="flex items-center mb-6">
-                <Club className="text-primary h-8 w-8 mr-2" />
-                <h2 className="text-white text-2xl font-bold">GolfTrackPro</h2>
+                <Club className="text-[#CD1B32] h-8 w-8 mr-2" />
+                <h2 className="text-white text-2xl font-bold">CLM PRO</h2>
               </div>
               
               <h3 className="text-white text-3xl font-bold mb-4">
                 Elevate Your Golf Game with Precision Analytics
               </h3>
               
-              <p className="text-neutral-300 mb-6">
+              <p className="text-[#AFB2B8] mb-6">
                 The ceiling-mounted launch monitor that provides professional-grade 
                 swing analysis, helping you improve your game with every shot.
               </p>
               
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-neutral-700/50 p-4 rounded-lg">
-                  <div className="text-primary text-xl font-bold mb-1">100%</div>
+                <div className="bg-[#5C616B]/50 p-4 rounded-lg">
+                  <div className="text-[#CD1B32] text-xl font-bold mb-1">100%</div>
                   <div className="text-white text-sm">Accurate Shot Tracking</div>
                 </div>
-                <div className="bg-neutral-700/50 p-4 rounded-lg">
-                  <div className="text-primary text-xl font-bold mb-1">12+</div>
+                <div className="bg-[#5C616B]/50 p-4 rounded-lg">
+                  <div className="text-[#CD1B32] text-xl font-bold mb-1">12+</div>
                   <div className="text-white text-sm">Data Points Per Swing</div>
                 </div>
-                <div className="bg-neutral-700/50 p-4 rounded-lg">
-                  <div className="text-primary text-xl font-bold mb-1">Easy</div>
+                <div className="bg-[#5C616B]/50 p-4 rounded-lg">
+                  <div className="text-[#CD1B32] text-xl font-bold mb-1">Easy</div>
                   <div className="text-white text-sm">Setup Process</div>
                 </div>
-                <div className="bg-neutral-700/50 p-4 rounded-lg">
-                  <div className="text-primary text-xl font-bold mb-1">Cloud</div>
+                <div className="bg-[#5C616B]/50 p-4 rounded-lg">
+                  <div className="text-[#CD1B32] text-xl font-bold mb-1">Cloud</div>
                   <div className="text-white text-sm">Shot Storage</div>
                 </div>
               </div>
@@ -306,7 +307,7 @@ export default function AuthPage() {
                 />
                 <div>
                   <p className="text-white text-sm italic">
-                    "GolfTrackPro has completely transformed my practice sessions. The insights 
+                    "CLM PRO has completely transformed my practice sessions. The insights 
                     are incredible and my handicap dropped 4 strokes in just one month!"
                   </p>
                   <p className="text-neutral-400 text-xs mt-1">- Michael S., Handicap 8</p>

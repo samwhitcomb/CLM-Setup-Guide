@@ -11,6 +11,11 @@ export function ProtectedRoute({
 }) {
   const { user, isLoading } = useAuth();
 
+  // Allow access to onboarding page without authentication
+  if (path === "/onboarding") {
+    return <Route path={path} component={Component} />;
+  }
+
   if (isLoading) {
     return (
       <Route path={path}>

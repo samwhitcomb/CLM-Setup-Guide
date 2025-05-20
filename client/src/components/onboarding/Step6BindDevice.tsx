@@ -25,7 +25,8 @@ import {
   CalendarClock, 
   Gift, 
   X, 
-  ChevronRight
+  ChevronRight,
+  ChevronLeft
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -40,7 +41,7 @@ const bindDeviceSchema = z.object({
 });
 
 export function Step6BindDevice() {
-  const { goToNextStep } = useOnboarding();
+  const { goToNextStep, goToPreviousStep } = useOnboarding();
   const { toast } = useToast();
   const { user } = useAuth();
   const [binding, setBinding] = useState(false);
@@ -111,8 +112,8 @@ export function Step6BindDevice() {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold">Bind the Device to Your Account</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 6 of 9</span>
+        <h3 className="text-xl font-semibold">Bind Device</h3>
+        <span className="text-xs bg-[#CD1B32]/20 text-[#CD1B32] px-2 py-1 rounded">Step 6 of 8</span>
       </div>
       
       {deviceBound ? (
@@ -121,9 +122,9 @@ export function Step6BindDevice() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 100 }}
-            className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4"
+            className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4"
           >
-            <Check className="h-10 w-10 text-green-600" />
+            <Check className="h-10 w-10 text-primary" />
           </motion.div>
           
           <h3 className="text-xl font-medium text-center mb-2">Device Bound Successfully</h3>
@@ -134,7 +135,7 @@ export function Step6BindDevice() {
           <div className="bg-neutral-100 p-6 rounded-lg max-w-md w-full mb-6">
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-medium">{form.getValues().deviceNickname}</h4>
-              <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Active</span>
+              <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">Active</span>
             </div>
             <div className="space-y-3 text-sm text-neutral-600">
               <div className="flex justify-between">
@@ -149,7 +150,7 @@ export function Step6BindDevice() {
               )}
               <div className="flex justify-between">
                 <span>Status:</span>
-                <span className="text-green-600">Connected</span>
+                <span className="text-primary">Connected</span>
               </div>
               <div className="flex justify-between">
                 <span>Owner:</span>
@@ -169,13 +170,24 @@ export function Step6BindDevice() {
             </div>
           </div>
           
-          <Button
-            onClick={goToNextStep}
-            className="bg-primary hover:bg-primary/90 text-white"
-          >
-            Continue to Next Step
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="flex justify-between mt-6">
+            <Button
+              variant="outline"
+              onClick={goToPreviousStep}
+              className="flex items-center"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Previous Step
+            </Button>
+            <Button
+              onClick={goToNextStep}
+              className="bg-[#CD1B32] hover:bg-[#DD393A] text-white flex items-center"
+              disabled={!deviceBound}
+            >
+              Continue to Next Step
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
       ) : trialActivated ? (
         <div className="fade-in">
@@ -231,11 +243,11 @@ export function Step6BindDevice() {
                     <span>1-month free trial</span>
                   </div>
                   <div className="flex items-center text-sm">
-                    <Check className="h-4 w-4 mr-2 text-green-600" />
+                    <Check className="h-4 w-4 mr-2 text-primary" />
                     <span>Full access to all features</span>
                   </div>
                   <div className="flex items-center text-sm">
-                    <Check className="h-4 w-4 mr-2 text-green-600" />
+                    <Check className="h-4 w-4 mr-2 text-primary" />
                     <span>Cancel anytime</span>
                   </div>
                 </div>
@@ -294,8 +306,8 @@ export function Step6BindDevice() {
         </div>
       ) : (
         <>
-          <p className="text-neutral-700 mb-6">
-            Now let's secure your device to your account. This helps ensure that only you can access and control your CLM PRO launch monitor.
+          <p className="text-neutral-600 max-w-lg ml-4">
+            Now let's secure your device to your account. This helps ensure that only you can access and control your CLM PRO.
           </p>
           
           {/* Account details card */}
@@ -317,7 +329,7 @@ export function Step6BindDevice() {
           
           <div className="flex flex-col md:flex-row gap-8 mb-8">
             <div className="w-full md:w-1/2">
-              <div className="bg-neutral-100 rounded-lg p-6 h-full">
+              <div className="bg-[#F7F7F7] p-6 rounded-lg h-full">
                 <div className="flex items-center justify-center h-full">
                   <svg 
                     width="240" 
@@ -327,21 +339,21 @@ export function Step6BindDevice() {
                     className="opacity-90"
                   >
                     {/* User icon */}
-                    <circle cx="90" cy="120" r="40" fill="#e5e7eb" />
-                    <circle cx="90" cy="105" r="15" fill="#9ca3af" />
-                    <path d="M65,140 C65,125 80,120 90,120 C100,120 115,125 115,140" fill="#9ca3af" />
+                    <circle cx="90" cy="120" r="40" fill="#E4E5E9" />
+                    <circle cx="90" cy="105" r="15" fill="#8D94A2" />
+                    <path d="M65,140 C65,125 80,120 90,120 C100,120 115,125 115,140" fill="#8D94A2" />
                     
                     {/* User name */}
-                    <text x="90" y="70" fontSize="12" textAnchor="middle" fill="#374151" fontWeight="bold">{accountName}</text>
+                    <text x="90" y="70" fontSize="12" textAnchor="middle" fill="#323438" fontWeight="bold">{accountName}</text>
                     
                     {/* Device icon */}
-                    <rect x="150" y="100" width="40" height="40" rx="5" fill="#1a8754" />
+                    <rect x="150" y="100" width="40" height="40" rx="5" fill="#CD1B32" />
                     <circle cx="170" cy="120" r="10" fill="#fff" fillOpacity="0.6" />
                     
                     {/* Connection line */}
                     <path 
                       d="M115,120 L150,120" 
-                      stroke={binding ? "#22c55e" : "#9ca3af"} 
+                      stroke={binding ? "#CD1B32" : "#8D94A2"} 
                       strokeWidth="3" 
                       strokeDasharray={binding ? "none" : "5,5"} 
                       className={binding ? "animate-pulse" : ""}
@@ -352,8 +364,8 @@ export function Step6BindDevice() {
                       cx="132" 
                       cy="120" 
                       r="15" 
-                      fill={binding ? "#22c55e" : "#f3f4f6"} 
-                      stroke={binding ? "#15803d" : "#d1d5db"} 
+                      fill={binding ? "#CD1B32" : "#F7F7F7"} 
+                      stroke={binding ? "#DD393A" : "#D3D5D9"} 
                       strokeWidth="2"
                       className={binding ? "animate-pulse" : ""}
                     />
@@ -363,13 +375,13 @@ export function Step6BindDevice() {
                       width="12" 
                       height="10" 
                       rx="2" 
-                      fill={binding ? "#15803d" : "#9ca3af"} 
+                      fill={binding ? "#DD393A" : "#8D94A2"} 
                     />
-                    <rect x="129" y="112" width="6" height="5" rx="1" fill={binding ? "#15803d" : "#9ca3af"} />
+                    <rect x="129" y="112" width="6" height="5" rx="1" fill={binding ? "#DD393A" : "#8D94A2"} />
                     
                     {/* Text labels */}
-                    <text x="90" y="170" fontSize="14" textAnchor="middle" fill="#6b7280">Your Account</text>
-                    <text x="170" y="170" fontSize="14" textAnchor="middle" fill="#6b7280">CLM PRO</text>
+                    <text x="90" y="170" fontSize="14" textAnchor="middle" fill="#5C616B">Your Account</text>
+                    <text x="170" y="170" fontSize="14" textAnchor="middle" fill="#5C616B">Rapsodo GOLF</text>
                   </svg>
                 </div>
               </div>
@@ -397,7 +409,7 @@ export function Step6BindDevice() {
                       <FormItem>
                         <FormLabel>Device Nickname</FormLabel>
                         <FormControl>
-                          <Input placeholder="My CLM PRO" {...field} />
+                          <Input placeholder="${accountName}'s CLM" {...field} />
                         </FormControl>
                         <FormDescription>
                           Choose a name for your device to identify it easily
@@ -426,7 +438,7 @@ export function Step6BindDevice() {
                   
                   <Button 
                     type="submit" 
-                    className="bg-primary hover:bg-primary/90 text-white w-full"
+                    className="bg-[#CD1B32] hover:bg-[#DD393A] text-white w-full"
                     disabled={binding}
                   >
                     {binding ? `Binding to ${accountName}'s Account...` : `Bind to ${accountName}'s Account`}

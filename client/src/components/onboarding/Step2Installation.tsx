@@ -1,30 +1,627 @@
 import { useState } from "react";
 import { useOnboarding } from "@/lib/onboarding-context";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, ArrowRight, Check } from "lucide-react";
+import { 
+  AlertTriangle, 
+  ArrowRight, 
+  Check, 
+  Ruler,
+  Drill,
+  Cable,
+  Power,
+  Target,
+  AlertCircle,
+  HardHat,
+  ArrowDown,
+  ChevronRight,
+  ChevronLeft,
+  Layout,
+  MapPin,
+  Wrench,
+  Zap,
+  Network
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import bracketInstallationGif from "@/assets/images/bracket-installation.gif";
+import deviceMountingGif from "@/assets/images/device-mounting.gif";
+
+type MountingType = "direct" | "pole";
+
+type CeilingMaterial = "drywall" | "concrete" | "suspended" | "wood";
+
+type WiringType = "surface" | "hidden";
+
+type InstallationState = {
+  mountingType: MountingType | null;
+  wiringType: WiringType | null;
+  ceilingMaterial: CeilingMaterial | null;
+  mountingPosition: {
+    distanceFromScreen: number;
+    isCentered: boolean;
+  };
+  bracketInstalled: boolean;
+  cablesReady: boolean;
+  deviceMounted: boolean;
+  ceilingMarked: boolean;
+  wiringConfirmed: boolean;
+};
 
 export function Step2Installation() {
-  const { goToNextStep } = useOnboarding();
+  const { goToNextStep, goToPreviousStep } = useOnboarding();
   const [installStep, setInstallStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [installationState, setInstallationState] = useState<InstallationState>({
+    mountingType: null,
+    wiringType: null,
+    ceilingMaterial: null,
+    mountingPosition: {
+      distanceFromScreen: 0,
+      isCentered: false
+    },
+    bracketInstalled: false,
+    cablesReady: false,
+    deviceMounted: false,
+    ceilingMarked: false,
+    wiringConfirmed: false
+  });
 
   const handleNextInstallStep = () => {
-    if (installStep < 3) {
+    if (installStep < 7) {
       setInstallStep(installStep + 1);
     } else {
       setIsCompleted(true);
     }
   };
 
-  const totalSteps = 3;
+  const handlePrevInstallStep = () => {
+    if (installStep > 1) {
+      setInstallStep(installStep - 1);
+      setIsCompleted(false);
+    }
+  };
+
+  const handleStepClick = (step: number) => {
+    setInstallStep(step);
+    setIsCompleted(false);
+  };
+
+  const totalSteps = 7;
   const progress = (installStep / totalSteps) * 100;
+
+  const renderStepContent = () => {
+    switch (installStep) {
+      case 1:
+        return (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8"
+          >
+            <h4 className="font-medium mb-4">Room Measurement and Mounting Position</h4>
+            <div className="mb-6">
+              <div className="w-full h-48 bg-neutral-100 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-neutral-400">Placeholder for Room Measurement GIF</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    Mounting Position
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Ideal Mounting Zone</h5>
+                      <ul className="text-sm text-neutral-600 space-y-1 list-disc pl-4">
+                        <li>9-12 feet from the screen</li>
+                        <li>Centered above the hitting area</li>
+                        <li>Level with the floor</li>
+                      </ul>
+                    </div>
+                    <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                      <div className="flex items-start">
+                        <Target className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-neutral-800 mb-1">Position Detected</h5>
+                          <p className="text-sm text-neutral-600">
+                            Mounting location: 9-12 ft from screen, centered to hitting area
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+      </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Wrench className="h-4 w-4" />
+                    Mounting Type
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <RadioGroup
+                      value={installationState.mountingType || ""}
+                      onValueChange={(value) => setInstallationState(prev => ({
+                        ...prev,
+                        mountingType: value as MountingType
+                      }))}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="direct" id="direct" />
+                        <Label htmlFor="direct">Direct Mount</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="pole" id="pole" />
+                        <Label htmlFor="pole">Drop-down Pole</Label>
+        </div>
+                    </RadioGroup>
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Recommended Hardware</h5>
+                      <ul className="text-sm text-neutral-600 space-y-1 list-disc pl-4">
+                        <li>Heavy-duty anchors</li>
+                        <li>1/4" lag screws</li>
+                        <li>Washers and lock nuts</li>
+                      </ul>
+        </div>
+      </div>
+                </CardContent>
+              </Card>
+            </div>
+            <Alert variant="destructive" className="mb-6">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>Professional Installation Recommended</AlertTitle>
+              <AlertDescription>
+                For suspended ceilings or heights over 12 feet, we recommend professional installation.
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        );
+
+      case 2:
+        return (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mb-8"
+        >
+            <h4 className="font-medium mb-4">Marking the Mounting Position</h4>
+            <div className="mb-6">
+              <div className="w-full h-48 bg-neutral-100 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-neutral-400">Placeholder for Mounting Position GIF</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Layout className="h-4 w-4" />
+                    Template Placement
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Instructions:</h5>
+                      <ol className="text-sm text-neutral-600 space-y-2 list-decimal pl-4">
+                        <li>Place the mounting template on the ceiling in the calculated position</li>
+                        <li>Use a level to ensure it's flat and square to the screen</li>
+                        <li>Mark the screw holes with a pencil</li>
+                      </ol>
+                    </div>
+                    <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                      <div className="flex items-start">
+                        <Target className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-neutral-800 mb-1">Template Position</h5>
+                          <p className="text-sm text-neutral-600">
+                            Ensure the template is centered and aligned with your hitting area.
+                          </p>
+            </div>
+              </div>
+            </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Check className="h-4 w-4" />
+                    Confirmation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Checklist</h5>
+                      <ul className="text-sm text-neutral-600 space-y-2">
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Template is centered
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Template is level
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Holes are marked
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+          </div>
+        </motion.div>
+        );
+
+      case 3:
+        return (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mb-8"
+        >
+            <h4 className="font-medium mb-4">Wiring Options and Planning</h4>
+            <div className="mb-6">
+              <div className="w-full h-48 bg-neutral-100 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-neutral-400">Placeholder for Wiring Options GIF</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Cable className="h-4 w-4" />
+                    Cable Routing Options
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <RadioGroup
+                      value={installationState.wiringType || ""}
+                      onValueChange={(value) => setInstallationState(prev => ({
+                        ...prev,
+                        wiringType: value as WiringType
+                      }))}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="surface" id="surface" />
+                        <Label htmlFor="surface">Surface Routing</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="hidden" id="hidden" />
+                        <Label htmlFor="hidden">Hidden Install</Label>
+            </div>
+                    </RadioGroup>
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Cable Requirements</h5>
+                      <ul className="text-sm text-neutral-600 space-y-2">
+                        <li className="flex items-center gap-2">
+                          <Network className="h-4 w-4" />
+                          Ethernet: 15-20 feet
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Zap className="h-4 w-4" />
+                          Power: 15-20 feet
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <ArrowDown className="h-4 w-4" />
+                          Leave 6-12 inches of slack
+                        </li>
+              </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" />
+                    Important Notes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Alert variant="destructive" className="mb-6">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTitle>Professional Assistance Recommended</AlertTitle>
+                    <AlertDescription>
+                      Hidden ceiling wiring should only be performed by a professional.
+                    </AlertDescription>
+                  </Alert>
+                  <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                    <div className="flex items-start">
+                      <HardHat className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                      <div>
+                        <h5 className="font-medium text-neutral-800 mb-1">Safety First</h5>
+                        <p className="text-sm text-neutral-600">
+                          Ensure all cables are properly secured and protected.
+                        </p>
+              </div>
+            </div>
+                  </div>
+                </CardContent>
+              </Card>
+          </div>
+        </motion.div>
+        );
+
+      case 4:
+        return (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mb-8"
+        >
+            <h4 className="font-medium mb-4">Drilling and Fixing the Bracket</h4>
+            <div className="mb-6">
+              <div className="w-full h-40 bg-neutral-100 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
+                <img 
+                  src={bracketInstallationGif} 
+                  alt="Bracket Installation Process" 
+                  className="h-full w-auto object-contain"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Drill className="h-4 w-4" />
+                    Installation Instructions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Step-by-Step Guide</h5>
+                      <ol className="text-sm text-neutral-600 space-y-2 list-decimal pl-4">
+                        <li>Drill pilot holes at marked positions</li>
+                        <li>Install appropriate anchors for your ceiling type</li>
+                        <li>Secure the bracket with provided screws</li>
+                        <li>Use a level to ensure the bracket is perfectly flat</li>
+                      </ol>
+                    </div>
+                    <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                      <div className="flex items-start">
+                        <HardHat className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-neutral-800 mb-1">Safety First</h5>
+                          <p className="text-sm text-neutral-600">
+                            Ensure the bracket is securely attached before proceeding.
+                          </p>
+                        </div>
+                      </div>
+            </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Check className="h-4 w-4" />
+                    Installation Checklist
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Confirm Installation</h5>
+                      <ul className="text-sm text-neutral-600 space-y-2">
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Bracket is securely attached
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Bracket is level
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          All screws are tightened
+                </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+        );
+
+      case 5:
+        return (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8"
+          >
+            <h4 className="font-medium mb-4">Threading Cables and Seating the Adapter</h4>
+            <div className="mb-6">
+              <div className="w-full h-48 bg-neutral-100 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-neutral-400">Placeholder for Cable Threading GIF</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Cable className="h-4 w-4" />
+                    Cable Preparation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Instructions</h5>
+                      <ol className="text-sm text-neutral-600 space-y-2 list-decimal pl-4">
+                        <li>Select the correct cable lengths</li>
+                        <li>Thread cables through the bracket</li>
+                        <li>Seat the power adapter brick inside the bracket</li>
+                        <li>Leave 6-12 inches of cable exposed</li>
+                      </ol>
+                    </div>
+                    <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                      <div className="flex items-start">
+                        <ArrowDown className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-neutral-800 mb-1">Cable Management</h5>
+                          <p className="text-sm text-neutral-600">
+                            Ensure cables are neatly routed and have enough slack for connection.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Power className="h-4 w-4" />
+                    Power Setup
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Power Requirements</h5>
+                      <ul className="text-sm text-neutral-600 space-y-2">
+                        <li className="flex items-center gap-2">
+                          <Zap className="h-4 w-4" />
+                          Ensure power outlet is accessible
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Network className="h-4 w-4" />
+                          Ethernet port is available
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Adapter is securely seated
+                </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+        );
+
+      case 6:
+        return (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8"
+          >
+            <h4 className="font-medium mb-4">Mounting the CLM PRO</h4>
+            <div className="mb-6">
+              <div className="w-full h-40 bg-neutral-100 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
+                <img 
+                  src={deviceMountingGif} 
+                  alt="Device Mounting Process" 
+                  className="h-full w-auto object-contain"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-4 w-4" />
+                    Device Installation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Step-by-Step Guide</h5>
+                      <ol className="text-sm text-neutral-600 space-y-2 list-decimal pl-4">
+                        <li>Insert monitor left to right until it clicks into place</li>
+                        <li>Plug in the Ethernet and power cables</li>
+                        <li>Confirm the unit is securely latched</li>
+                      </ol>
+                    </div>
+                    <div className="bg-primary/10 border border-primary rounded-lg p-4">
+                      <div className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-neutral-800 mb-1">Device Mounted Successfully</h5>
+                          <p className="text-sm text-neutral-600">
+                            The CLM PRO is now securely mounted and ready for setup.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" />
+                    Final Checks
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-neutral-100 rounded-lg p-4">
+                      <h5 className="font-medium mb-2">Verification Checklist</h5>
+                      <ul className="text-sm text-neutral-600 space-y-2">
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Device is securely mounted
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          All cables are connected
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500" />
+                          Power indicator is on
+                </li>
+              </ul>
+            </div>
+                  </div>
+                </CardContent>
+              </Card>
+          </div>
+        </motion.div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold">Physical Installation & Wiring</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 2 of 9</span>
+        <h3 className="text-xl font-semibold">Installation & Wiring</h3>
+        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 3 of 7</span>
       </div>
       
       <div className="mb-6">
@@ -35,210 +632,62 @@ export function Step2Installation() {
           />
         </div>
         <div className="flex justify-between text-xs text-neutral-500">
-          <span>Mounting</span>
-          <span>Wiring</span>
-          <span>Final Check</span>
+          {[
+            { label: "Position", step: 1 },
+            { label: "Marking", step: 2 },
+            { label: "Wiring", step: 3 },
+            { label: "Bracket", step: 4 },
+            { label: "Cables", step: 5 },
+            { label: "Device", step: 6 }
+          ].map(({ label, step }) => (
+            <button
+              key={step}
+              onClick={() => handleStepClick(step)}
+              className={`cursor-pointer hover:text-primary transition-colors ${
+                installStep === step ? "text-primary font-medium" : ""
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Step 1: Mounting */}
-      {installStep === 1 && (
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-            <div className="w-full sm:w-1/2 h-52 bg-neutral-100 rounded-lg overflow-hidden">
-              <svg 
-                width="100%" 
-                height="100%" 
-                viewBox="0 0 400 208" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Ceiling */}
-                <rect x="50" y="20" width="300" height="10" fill="#d1d5db" />
-                
-                {/* Device mounted to ceiling */}
-                <rect x="175" y="30" width="50" height="30" fill="#1a8754" rx="4" />
-                <circle cx="200" cy="50" r="8" fill="#0f5132" />
-                
-                {/* Mounting brackets */}
-                <rect x="180" y="25" width="40" height="5" fill="#6b7280" />
-                <line x1="185" y1="25" x2="185" y2="20" stroke="#6b7280" strokeWidth="2" />
-                <line x1="215" y1="25" x2="215" y2="20" stroke="#6b7280" strokeWidth="2" />
-                
-                {/* Measuring lines */}
-                <line x1="100" y1="60" x2="100" y2="180" stroke="#9ca3af" strokeWidth="1" strokeDasharray="5,5" />
-                <line x1="300" y1="60" x2="300" y2="180" stroke="#9ca3af" strokeWidth="1" strokeDasharray="5,5" />
-                <line x1="100" y1="180" x2="300" y2="180" stroke="#9ca3af" strokeWidth="1" />
-                <text x="200" y="195" fontFamily="sans-serif" fontSize="12" fill="#6b7280" textAnchor="middle">Hitting area (7-10 feet below)</text>
-              </svg>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <h4 className="font-medium mb-3">Mount the device to your ceiling:</h4>
-              <ul className="list-disc pl-5 mb-6 text-neutral-700 space-y-2 text-sm">
-                <li>Position 7-10 feet above hitting area</li>
-                <li>Use included mounting bracket and screws</li>
-                <li>Ensure stable mounting surface</li>
-                <li>Level the device parallel to the floor</li>
-              </ul>
-              <div className="bg-amber-50 p-3 rounded-lg text-sm flex items-start">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 mr-2 flex-shrink-0" />
-                <p className="text-amber-800">Professional installation recommended for ceiling heights over 12 feet.</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Step 2: Wiring */}
-      {installStep === 2 && (
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-            <div className="w-full sm:w-1/2 h-52 bg-neutral-100 rounded-lg overflow-hidden">
-              <svg 
-                width="100%" 
-                height="100%" 
-                viewBox="0 0 400 208" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Ceiling */}
-                <rect x="50" y="20" width="300" height="10" fill="#d1d5db" />
-                
-                {/* Device */}
-                <rect x="175" y="30" width="50" height="30" fill="#1a8754" rx="4" />
-                <circle cx="200" cy="50" r="8" fill="#0f5132" />
-                
-                {/* Power cable */}
-                <path d="M175,45 C150,45 130,60 130,100 C130,130 130,160 130,180" stroke="#4b5563" strokeWidth="3" fill="none" />
-                
-                {/* Ethernet cable */}
-                <path d="M225,45 C250,45 270,60 270,100 C270,130 270,160 270,180" stroke="#60a5fa" strokeWidth="3" fill="none" />
-                
-                {/* Labels */}
-                <text x="140" y="160" fontFamily="sans-serif" fontSize="12" fill="#4b5563">Power</text>
-                <text x="260" y="160" fontFamily="sans-serif" fontSize="12" fill="#3b82f6">Ethernet</text>
-              </svg>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <h4 className="font-medium mb-3">Connect power and Ethernet:</h4>
-              <ul className="list-disc pl-5 mb-6 text-neutral-700 space-y-2 text-sm">
-                <li>Connect the power adapter to the device</li>
-                <li>Plug power adapter into a nearby outlet</li>
-                <li>Connect Ethernet cable to device</li>
-                <li>Connect other end to your router or network switch</li>
-              </ul>
-              <div className="bg-blue-50 p-3 rounded-lg text-sm flex items-start">
-                <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-                <p className="text-blue-800">A wired Ethernet connection provides the most reliable performance.</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Step 3: Final Check */}
-      {installStep === 3 && (
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-            <div className="w-full sm:w-1/2 h-52 bg-neutral-100 rounded-lg overflow-hidden">
-              <svg 
-                width="100%" 
-                height="100%" 
-                viewBox="0 0 400 208" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Ceiling with installed device */}
-                <rect x="50" y="20" width="300" height="10" fill="#d1d5db" />
-                <rect x="175" y="30" width="50" height="30" fill="#1a8754" rx="4" />
-                <circle cx="200" cy="50" r="8" fill="#0f5132" />
-                
-                {/* Power and ethernet cables */}
-                <path d="M175,45 C150,45 130,60 130,100 C130,130 130,160 130,180" stroke="#4b5563" strokeWidth="3" fill="none" />
-                <path d="M225,45 C250,45 270,60 270,100 C270,130 270,160 270,180" stroke="#60a5fa" strokeWidth="3" fill="none" />
-                
-                {/* Checkmarks */}
-                <circle cx="130" cy="100" r="15" fill="#1a8754" opacity="0.8" />
-                <path d="M125,100 L130,105 L135,95" stroke="white" strokeWidth="2" fill="none" />
-                
-                <circle cx="270" cy="100" r="15" fill="#1a8754" opacity="0.8" />
-                <path d="M265,100 L270,105 L275,95" stroke="white" strokeWidth="2" fill="none" />
-                
-                <circle cx="200" cy="40" r="15" fill="#1a8754" opacity="0.8" />
-                <path d="M195,40 L200,45 L205,35" stroke="white" strokeWidth="2" fill="none" />
-              </svg>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <h4 className="font-medium mb-3">Final Installation Check:</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start">
-                  <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span>Device is securely mounted to ceiling</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span>Power cable is connected and plugged in</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span>Ethernet cable is connected to device and network</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span>Device is positioned above hitting area</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span>All cables are neatly secured</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </motion.div>
-      )}
+      {renderStepContent()}
 
       <div className="flex justify-between items-center">
         {!isCompleted ? (
+          <>
+            <Button 
+              variant="outline"
+              onClick={handlePrevInstallStep}
+              disabled={installStep === 1}
+              className="flex items-center"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Previous
+            </Button>
           <Button 
             onClick={handleNextInstallStep} 
             className="bg-primary hover:bg-primary/90 text-white ml-auto flex items-center"
           >
-            {installStep === 3 ? "Complete" : "Next"}
+              {installStep === 6 ? "Complete" : "Next"}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
+          </>
         ) : (
           <>
-            <div className="text-sm text-neutral-600 flex items-center">
-              <Check className="h-4 w-4 text-green-500 mr-2" />
-              <span>Installation completed successfully</span>
-            </div>
+            <Button 
+              variant="outline"
+              onClick={() => handleStepClick(6)}
+              className="flex items-center"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back to Device Mounting
+            </Button>
             <Button 
               onClick={goToNextStep} 
-              className="bg-primary hover:bg-primary/90 text-white flex items-center"
+              className="bg-[#CD1B32] hover:bg-[#CD1B32]/90 text-white flex items-center"
             >
               Continue to Next Step
               <ArrowRight className="ml-2 h-4 w-4" />

@@ -103,7 +103,7 @@ export function AccountModal({ onClose, onComplete }: AccountModalProps) {
             <UserPlus className="text-primary h-8 w-8" />
           </div>
           <h3 className="text-xl font-semibold">Create Your Account</h3>
-          <p className="text-neutral-600 text-sm">Get started with your GolfTrackPro device</p>
+          <p className="text-neutral-600 text-sm">Get started with your CLM PRO device</p>
         </div>
         
         <Form {...form}>

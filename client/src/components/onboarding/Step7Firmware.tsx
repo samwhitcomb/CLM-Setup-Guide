@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useOnboarding } from "@/lib/onboarding-context";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, Check, AlertCircle, RefreshCw } from "lucide-react";
+import { ArrowRight, Download, Check, AlertCircle, RefreshCw, ChevronLeft } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function Step7Firmware() {
-  const { goToNextStep } = useOnboarding();
+  const { goToNextStep, goToPreviousStep } = useOnboarding();
   const [checkingForUpdates, setCheckingForUpdates] = useState(true);
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [installingUpdate, setInstallingUpdate] = useState(false);
@@ -62,8 +62,8 @@ export function Step7Firmware() {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold">Check and Install Firmware Updates</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 7 of 9</span>
+        <h3 className="text-xl font-semibold">Firmware Update</h3>
+        <span className="text-xs bg-[#CD1B32]/20 text-[#CD1B32] px-2 py-1 rounded">Step 7 of 8</span>
       </div>
       
       {checkingForUpdates ? (
@@ -86,9 +86,9 @@ export function Step7Firmware() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 100 }}
-            className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4"
+            className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4"
           >
-            <Check className="h-10 w-10 text-green-600" />
+            <Check className="h-10 w-10 text-primary" />
           </motion.div>
           
           <h3 className="text-xl font-medium text-center mb-2">Update Successful</h3>
@@ -107,13 +107,35 @@ export function Step7Firmware() {
             </ul>
           </div>
           
-          <Button
-            onClick={goToNextStep}
-            className="bg-primary hover:bg-primary/90 text-white"
-          >
-            Continue to Next Step
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="flex justify-between mt-6">
+            <Button
+              variant="outline"
+              onClick={goToPreviousStep}
+              className="flex items-center"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Previous Step
+            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleSkipUpdate}
+                className="flex items-center"
+                disabled={installingUpdate}
+              >
+                Skip Update
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                onClick={goToNextStep}
+                className="bg-[#CD1B32] hover:bg-[#DD393A] text-white flex items-center"
+                disabled={!updateComplete}
+              >
+                Continue to Next Step
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
       ) : installingUpdate ? (
         <div className="p-6">
@@ -143,7 +165,7 @@ export function Step7Firmware() {
             <AlertCircle className="h-4 w-4 text-amber-500" />
             <AlertTitle>Important</AlertTitle>
             <AlertDescription>
-              Keep the app open and the device powered on until the update is complete.
+              Keep the window open and the device powered on until the update is complete.
             </AlertDescription>
           </Alert>
           
@@ -186,31 +208,29 @@ export function Step7Firmware() {
           </div>
           
           <div className="w-full md:w-1/2">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-medium text-green-800">Latest Firmware</h4>
-                <span className="text-sm font-medium text-green-800">{latestVersion}</span>
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-medium text-black text-lg mb-2">Latest Firmware</h4>
+                <span className="text-sm font-medium text-black">{latestVersion}</span>
               </div>
               
-              <h5 className="font-medium text-green-800 mb-2">What's New:</h5>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-green-800 mb-4">
+              <h5 className="font-medium text-black mb-2">What's New:</h5>
+              <ul className="list-disc pl-5 space-y-2 text-base text-black mb-6">
                 <li>Improved shot detection accuracy</li>
-                <li>Enhanced club recognition capabilities</li>
-                <li>Better performance in varying lighting conditions</li>
-                <li>Reduced latency for real-time feedback</li>
-                <li>Fixed connectivity issues with certain routers</li>
+                <li>Enhanced ball spin calculations</li>
+                <li>Better network stability</li>
+                <li>Bug fixes and performance improvements</li>
               </ul>
               
-              <p className="text-xs text-green-800 mb-4">
-                Released on June 1, 2023 • Size: 24.3 MB
+              <p className="text-sm text-black mb-4">
+                We recommend keeping your device up to date with the latest firmware for optimal performance and features.
               </p>
               
-              <Button 
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
+              <Button
                 onClick={handleInstallUpdate}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                <Download className="mr-2 h-4 w-4" />
-                Install Update
+                {installingUpdate ? "Updating..." : "Update Firmware"}
               </Button>
             </div>
             
@@ -227,8 +247,8 @@ export function Step7Firmware() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center p-10">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4">
-            <Check className="h-10 w-10 text-green-600" />
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <Check className="h-10 w-10 text-primary" />
           </div>
           <h4 className="font-medium text-lg mb-2">Your Firmware is Up to Date</h4>
           <p className="text-neutral-600 text-center mb-6">
@@ -236,30 +256,10 @@ export function Step7Firmware() {
           </p>
           <Button
             onClick={goToNextStep}
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="bg-[#CD1B32] hover:bg-[#CD1B32]/90 text-white flex items-center"
           >
             Continue to Next Step
             <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      
-      {updateAvailable && !installingUpdate && !updateComplete && (
-        <div className="flex justify-between items-center">
-          <Button 
-            variant="ghost" 
-            className="text-neutral-700"
-            onClick={handleSkipUpdate}
-          >
-            Skip Update
-          </Button>
-          
-          <Button 
-            onClick={handleInstallUpdate} 
-            className="bg-primary hover:bg-primary/90 text-white flex items-center"
-          >
-            Install Update
-            <Download className="ml-2 h-4 w-4" />
           </Button>
         </div>
       )}

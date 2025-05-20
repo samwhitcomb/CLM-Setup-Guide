@@ -5,16 +5,16 @@ type OnboardingContextType = {
   currentStep: number;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-  goToStep: (step: number) => void;
-  resetOnboarding: () => void;
+  setStep: (step: number) => void;
 };
 
-const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
+const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const authContext = useContext(AuthContext);
   const user = authContext?.user ?? null;
   const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 8;
   
   // Initialize step from user data if available
   useEffect(() => {
@@ -24,7 +24,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   }, [user]);
   
   const goToNextStep = () => {
-    if (currentStep < 9) {
+    if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -35,14 +35,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   };
   
-  const goToStep = (step: number) => {
-    if (step >= 1 && step <= 9) {
+  const setStep = (step: number) => {
+    if (step >= 1 && step <= totalSteps) {
       setCurrentStep(step);
     }
-  };
-  
-  const resetOnboarding = () => {
-    setCurrentStep(1);
   };
   
   return (
@@ -51,8 +47,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         currentStep,
         goToNextStep,
         goToPreviousStep,
-        goToStep,
-        resetOnboarding,
+        setStep,
       }}
     >
       {children}

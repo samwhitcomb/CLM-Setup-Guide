@@ -25,22 +25,22 @@ import {
 import { motion } from "framer-motion";
 
 export function Step1PhysicalInstallation() {
-  const { goToNextStep } = useOnboarding();
+  const { goToNextStep, goToPreviousStep } = useOnboarding();
   const { user } = useAuth();
   const [installationReviewed, setInstallationReviewed] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   
   // Define the total number of pages
-  const totalPages = 3;
+  const totalPages = 2;
   
   const handleContinue = () => {
-    // If user is already signed in, go directly to next step
-    if (user) {
-      goToNextStep();
-    } else {
-      // Otherwise show the account modal for login
-      setShowAccountModal(true);
+    if (currentPage === totalPages - 1 || installationReviewed) {
+      if (user) {
+        goToNextStep();
+      } else {
+        setShowAccountModal(true);
+      }
     }
   };
   
@@ -61,7 +61,7 @@ export function Step1PhysicalInstallation() {
     // Page 0: Overview and Requirements
     <div key="page0" className="fade-in">
       <p className="text-neutral-700 mb-4">
-        Before proceeding with the digital setup, ensure your CLM PRO launch monitor is physically installed.
+        Before proceeding with the installation, ensure you have all the necessary tools and materials.
       </p>
       
       <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
@@ -108,7 +108,7 @@ export function Step1PhysicalInstallation() {
             <rect x="0" y="0" width="800" height="300" fill="#f8f9fa" />
             <rect x="200" y="50" width="400" height="30" fill="#d1d5db" />
             <rect x="280" y="80" width="240" height="160" fill="#e5e7eb" rx="8" />
-            <circle cx="400" cy="160" r="40" fill="#1a8754" opacity="0.8" />
+            <circle cx="400" cy="160" r="40" fill="#CD1B32" opacity="0.8" />
             <path d="M400,130 L400,190" stroke="#fff" strokeWidth="2" />
             <path d="M370,160 L430,160" stroke="#fff" strokeWidth="2" />
             <line x1="310" y1="80" x2="310" y2="240" stroke="#9ca3af" strokeWidth="1" strokeDasharray="5,5" />
@@ -135,74 +135,8 @@ export function Step1PhysicalInstallation() {
       </div>
     </div>,
 
-    // Page 1: Installation Steps
+    // Page 1: Additional Resources
     <div key="page1" className="fade-in">
-      <h4 className="font-medium mb-3">Installation Steps:</h4>
-      <div className="space-y-3">
-        <div className="flex items-start bg-white border rounded-lg p-3">
-          <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-2 flex-shrink-0 text-xs">
-            1
-          </div>
-          <div>
-            <h5 className="font-medium text-sm mb-1">Identify Optimal Location</h5>
-            <p className="text-xs text-neutral-600 mb-1">
-              Mount directly above your hitting area. Ideal height: 8-10 feet.
-            </p>
-            <div className="flex items-center text-xs text-primary">
-              <CheckCircle className="h-3 w-3 mr-1" />
-              <span>Ensure clear view of your hitting area</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex items-start bg-white border rounded-lg p-3">
-          <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-2 flex-shrink-0 text-xs">
-            2
-          </div>
-          <div>
-            <h5 className="font-medium text-sm mb-1">Prepare Mounting Bracket</h5>
-            <p className="text-xs text-neutral-600 mb-1">
-              Attach bracket to ceiling with provided screws. Ensure it's level.
-            </p>
-            <div className="flex items-center text-xs text-amber-600">
-              <AlertCircle className="h-3 w-3 mr-1" />
-              <span>Use appropriate anchors for your ceiling type</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex items-start bg-white border rounded-lg p-3">
-          <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-2 flex-shrink-0 text-xs">
-            3
-          </div>
-          <div>
-            <h5 className="font-medium text-sm mb-1">Attach Launch Monitor</h5>
-            <p className="text-xs text-neutral-600">
-              Slide device onto bracket until it clicks. Front (with logo) should face hitting area.
-            </p>
-          </div>
-        </div>
-        
-        <div className="flex items-start bg-white border rounded-lg p-3">
-          <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-2 flex-shrink-0 text-xs">
-            4
-          </div>
-          <div>
-            <h5 className="font-medium text-sm mb-1">Connect Power</h5>
-            <p className="text-xs text-neutral-600 mb-1">
-              Connect adapter to device and outlet. Route cable neatly along ceiling.
-            </p>
-            <div className="flex items-center text-xs text-primary">
-              <CheckCircle className="h-3 w-3 mr-1" />
-              <span>Power indicator should light up when connected</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>,
-
-    // Page 2: Additional Resources and Final Check
-    <div key="page2" className="fade-in">
       <div className="bg-neutral-100 p-3 rounded-lg border border-neutral-200 mb-4">
         <h5 className="font-medium flex items-center gap-2 mb-2 text-sm">
           <FileText className="h-4 w-4 text-primary" />
@@ -220,13 +154,13 @@ export function Step1PhysicalInstallation() {
         </ul>
       </div>
       
-      <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+      <div className="bg-primary/20 border border-primary rounded-lg p-3 mb-4">
         <div className="flex items-start">
-          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
+          <CheckCircle className="h-5 w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
           <div>
-            <h5 className="font-medium text-green-800 mb-1">Installation Checklist</h5>
-            <ul className="text-xs text-green-700 space-y-1 list-disc pl-4">
-              <li>Device is mounted 8-10 feet high</li>
+            <h5 className="font-medium text-neutral-800 mb-1">Installation Checklist</h5>
+            <ul className="text-xs text-neutral-700 space-y-1 list-disc pl-4">
+              <li>Device is mounted 9 - 10.5 feet high</li>
               <li>Bracket is level and securely attached</li>
               <li>Device is clicked firmly into bracket</li>
               <li>Power cable is connected and routed neatly</li>
@@ -246,8 +180,8 @@ export function Step1PhysicalInstallation() {
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 fade-in">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold">Physical Installation Guide</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 1 of 9</span>
+        <h3 className="text-xl font-semibold">Installation Overview</h3>
+        <span className="text-xs bg-[#CD1B32]/20 text-[#CD1B32] px-2 py-1 rounded">Step 2 of 8</span>
       </div>
       
       {/* Page content with fixed height to prevent layout shifts */}
@@ -293,25 +227,35 @@ export function Step1PhysicalInstallation() {
       </div>
       
       <div className="flex justify-between items-center">
-        <div className="text-neutral-600 text-sm">
-          <label className="flex items-center" htmlFor="installation-reviewed">
-            <Checkbox 
-              id="installation-reviewed" 
-              checked={installationReviewed}
-              onCheckedChange={(checked) => setInstallationReviewed(!!checked)}
-              className="mr-2 h-4 w-4"
-            />
-            <span>I've installed my device or will skip this step</span>
-          </label>
-        </div>
-        <Button 
-          onClick={handleContinue} 
-          className="bg-primary hover:bg-primary/90 text-white transition flex items-center"
-          disabled={!installationReviewed}
+        <Button
+          variant="outline"
+          onClick={goToPreviousStep}
+          className="flex items-center"
         >
-          Continue to Next Step
-          <ArrowRight className="ml-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Previous Step
         </Button>
+        <div className="flex items-center gap-6">
+          <div className="text-[#5C616B] text-sm">
+            <label className="flex items-center" htmlFor="installation-reviewed">
+              <Checkbox 
+                id="installation-reviewed" 
+                checked={installationReviewed}
+                onCheckedChange={(checked) => setInstallationReviewed(!!checked)}
+                className="mr-2 h-4 w-4"
+              />
+              <span>I've installed my device or will skip this step</span>
+            </label>
+          </div>
+          <Button 
+            onClick={handleContinue} 
+            className="bg-[#CD1B32] hover:bg-[#DD393A] text-white transition flex items-center"
+            disabled={!(currentPage === totalPages - 1 || installationReviewed)}
+          >
+            Continue to Next Step
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {showAccountModal && (

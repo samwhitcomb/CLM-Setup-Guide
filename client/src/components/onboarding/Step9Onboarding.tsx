@@ -68,7 +68,7 @@ export function Step9Onboarding() {
     },
     {
       title: "Device Settings",
-      description: "Customize your launch monitor preferences",
+      description: "Customize your CLM PRO preferences",
       icon: <Settings className="h-8 w-8 text-primary" />,
     },
   ];
@@ -76,8 +76,8 @@ export function Step9Onboarding() {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold">Onboarding and First Use</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 9 of 9</span>
+        <h3 className="text-xl font-semibold">Final Setup</h3>
+        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 8 of 8</span>
       </div>
       
       {setupComplete ? (
@@ -86,14 +86,14 @@ export function Step9Onboarding() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 100 }}
-            className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mb-6"
+            className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6"
           >
-            <Check className="h-12 w-12 text-green-600" />
+            <Check className="h-12 w-12 text-primary" />
           </motion.div>
           
           <h3 className="text-2xl font-medium text-center mb-2">Setup Complete!</h3>
           <p className="text-neutral-600 text-center max-w-md mb-8">
-            Congratulations! Your CLM PRO launch monitor is now set up and ready to use.
+            Congratulations! Your Rapsodo CLM PRO is now set up and ready to use.
             You can start analyzing your golf swing right away.
           </p>
           
@@ -109,7 +109,7 @@ export function Step9Onboarding() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-700">Status:</span>
-                <span className="text-green-600 font-medium">Active</span>
+                <span className="text-primary font-medium">Active</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-700">Trial ends:</span>
@@ -143,8 +143,8 @@ export function Step9Onboarding() {
         </div>
       ) : (
         <>
-          <p className="text-neutral-700 mb-6">
-            Let's get you familiar with the key features of your CLM PRO launch monitor and prepare for your first use.
+          <p className="text-neutral-600 max-w-lg mx-auto">
+            Let's get you familiar with the key features of your Rapsodo CLM PRO and prepare for your first use.
           </p>
           
           <Tabs defaultValue="features" className="w-full mb-8">
@@ -263,7 +263,7 @@ export function Step9Onboarding() {
                       <div>
                         <h5 className="font-medium">Position Yourself</h5>
                         <p className="text-sm text-neutral-600">
-                          Stand on your hitting mat directly under the launch monitor, with your ball in the detection zone.
+                          Stand on your hitting mat directly under the CLM PRO, with your ball in the detection zone.
                         </p>
                       </div>
                     </div>

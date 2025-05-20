@@ -92,7 +92,7 @@ export function SubscriptionModal({ onClose, onComplete }: SubscriptionModalProp
               <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm4 14a2 2 0 1 0 3.995.095L10 18H6zm12 0a2 2 0 1 0 3.995.095L22 18h-4z"/>
             </svg>
           </div>
-          <h3 className="text-xl font-semibold">Start Your Free Trial</h3>
+          <h3 className="text-xl font-semibold">(New Bowser Window) Start Your Free Trial</h3>
           <p className="text-neutral-600 text-sm">Get 1 month free access to all premium features</p>
         </div>
         

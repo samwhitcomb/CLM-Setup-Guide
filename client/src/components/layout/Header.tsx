@@ -1,7 +1,8 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Radio, HeadphonesIcon } from "lucide-react";
+import { HeadphonesIcon } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -11,11 +12,10 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm py-4">
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <Radio className="text-primary text-2xl h-6 w-6 mr-2" />
-          <h1 className="text-xl font-semibold">CLM PRO</h1>
+    <header className="bg-white border-b border-neutral-200">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Logo className="h-8 w-auto" />
         </div>
         <div className="hidden md:flex items-center space-x-4">
           {user && (

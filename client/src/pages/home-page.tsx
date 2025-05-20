@@ -47,12 +47,12 @@ export default function HomePage() {
           {/* Welcome Section */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Welcome, {user?.fullName || "Golfer"}!</h1>
-            <p className="text-neutral-600">Your GolfTrackPro device is ready to help improve your game.</p>
+            <p className="text-neutral-600">Your CLM PRO device is ready to help improve your game.</p>
           </div>
           
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <Card className="bg-primary text-white">
+            <Card className="bg-primary text-primary-foreground">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Club className="h-5 w-5" />
@@ -68,7 +68,7 @@ export default function HomePage() {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button variant="secondary" className="w-full">
+                <Button variant="secondary" className="w-full text-primary">
                   Start Session
                 </Button>
               </CardFooter>
@@ -141,7 +141,7 @@ export default function HomePage() {
                 <Activity className="h-12 w-12 text-neutral-400 mb-4" />
                 <h3 className="text-xl font-medium text-neutral-700 mb-2">No Activity Yet</h3>
                 <p className="text-neutral-600 text-center mb-6 max-w-md">
-                  You haven't recorded any shots with your GolfTrackPro device. 
+                  You haven't recorded any shots with your CLM PRO device. 
                   Start a practice session to begin tracking your performance.
                 </p>
                 <Button>Start First Session</Button>
@@ -215,7 +215,7 @@ export default function HomePage() {
                   <div className="bg-white p-3 rounded-lg border mb-4">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-sm font-medium">Status</span>
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     </div>

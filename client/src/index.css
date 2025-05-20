@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,23 +15,23 @@
   --card-foreground: 20 14.3% 4.1%;
   --border: 20 5.9% 90%;
   --input: 20 5.9% 90%;
-  --primary: 150 68% 31%; /* Golf green color */
-  --primary-foreground: 210 40% 98%;
+  --primary: 347 76% 46%; /* Rapsodo red (#CD1B32) */
+  --primary-foreground: 0 0% 100%; /* White text on red */
   --secondary: 210 40% 96.1%;
   --secondary-foreground: 222.2 47.4% 11.2%;
-  --accent: 142 71% 38%; /* Brighter green accent */
-  --accent-foreground: 210 40% 98%;
+  --accent: 347 76% 46%; /* Match primary color */
+  --accent-foreground: 0 0% 100%; /* White text on red */
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --ring: 150 68% 31%;
+  --ring: 347 76% 46%;
   --radius: 0.5rem;
   
   /* Chart colors */
-  --chart-1: 142 71% 45%;
-  --chart-2: 210 80% 56%;
-  --chart-3: 0 84% 60%;
-  --chart-4: 45 93% 47%;
-  --chart-5: 262 83% 58%;
+  --chart-1: 347 76% 46%; /* Primary red */
+  --chart-2: 210 80% 56%; /* Blue */
+  --chart-3: 45 93% 47%; /* Yellow */
+  --chart-4: 262 83% 58%; /* Purple */
+  --chart-5: 187 75% 44%; /* Cyan */
 }
 
 .dark {
@@ -44,11 +46,11 @@
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
   --primary: 150 68% 40%;
-  --primary-foreground: 0 0% 98%;
+  --primary-foreground: 0 0% 0%; /* Changed to black */
   --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
   --accent: 142 71% 45%;
-  --accent-foreground: 0 0% 98%;
+  --accent-foreground: 0 0% 0%; /* Changed to black */
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
   --ring: 240 4.9% 83.9%;
@@ -97,13 +99,15 @@
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;

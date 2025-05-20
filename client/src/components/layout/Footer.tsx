@@ -1,67 +1,54 @@
-import { Radio, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
-import { Link } from "wouter";
+import { Logo } from "@/components/ui/logo"
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-800 text-white py-8 mt-12">
+    <footer className="bg-white border-t border-neutral-200 py-8">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div className="mb-6 md:mb-0">
-            <div className="flex items-center">
-              <Radio className="text-white h-6 w-6 mr-2" />
-              <h2 className="text-lg font-semibold">CLM PRO</h2>
-            </div>
-            <p className="text-neutral-400 text-sm mt-2">Advanced swing analysis technology</p>
+            <Logo className="h-6 w-auto mb-2" />
+            <p className="text-neutral-500 text-sm">Measure to Master</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             <div>
-              <h5 className="text-sm font-semibold mb-3">Support</h5>
-              <ul className="text-neutral-400 text-sm space-y-2">
-                <li><Link href="#" className="hover:text-white">Help Center</Link></li>
-                <li><Link href="#" className="hover:text-white">Installation Guide</Link></li>
-                <li><Link href="#" className="hover:text-white">Contact Us</Link></li>
+              <h3 className="font-medium mb-3">Product</h3>
+              <ul className="space-y-2 text-sm text-neutral-600">
+                <li>Features</li>
+                <li>Pricing</li>
+                <li>Support</li>
               </ul>
             </div>
             
             <div>
-              <h5 className="text-sm font-semibold mb-3">Resources</h5>
-              <ul className="text-neutral-400 text-sm space-y-2">
-                <li><Link href="#" className="hover:text-white">User Manual</Link></li>
-                <li><Link href="#" className="hover:text-white">Videos</Link></li>
-                <li><Link href="#" className="hover:text-white">FAQs</Link></li>
+              <h3 className="font-medium mb-3">Resources</h3>
+              <ul className="space-y-2 text-sm text-neutral-600">
+                <li>Documentation</li>
+                <li>Tutorials</li>
+                <li>Blog</li>
               </ul>
             </div>
             
-            <div className="col-span-2 md:col-span-1">
-              <h5 className="text-sm font-semibold mb-3">Connect</h5>
-              <div className="flex space-x-4">
-                <Link href="#" className="text-neutral-400 hover:text-white">
-                  <Facebook className="h-5 w-5" />
-                </Link>
-                <Link href="#" className="text-neutral-400 hover:text-white">
-                  <Twitter className="h-5 w-5" />
-                </Link>
-                <Link href="#" className="text-neutral-400 hover:text-white">
-                  <Instagram className="h-5 w-5" />
-                </Link>
-                <Link href="#" className="text-neutral-400 hover:text-white">
-                  <Youtube className="h-5 w-5" />
-                </Link>
-              </div>
+            <div>
+              <h3 className="font-medium mb-3">Company</h3>
+              <ul className="space-y-2 text-sm text-neutral-600">
+                <li>About</li>
+                <li>Contact</li>
+                <li>Privacy</li>
+              </ul>
             </div>
           </div>
         </div>
         
-        <div className="border-t border-neutral-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-neutral-500 text-sm mb-4 md:mb-0">© {new Date().getFullYear()} CLM PRO. All rights reserved.</p>
+        <div className="mt-8 pt-8 border-t border-neutral-200 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-neutral-500 text-sm mb-4 md:mb-0">© {new Date().getFullYear()} Rapsodo GOLF. All rights reserved.</p>
           <div className="flex space-x-6">
-            <Link href="#" className="text-neutral-500 hover:text-white text-sm">Terms of Service</Link>
-            <Link href="#" className="text-neutral-500 hover:text-white text-sm">Privacy Policy</Link>
-            <Link href="#" className="text-neutral-500 hover:text-white text-sm">Cookies</Link>
+            <span className="text-neutral-500 text-sm">Terms</span>
+            <span className="text-neutral-500 text-sm">Privacy</span>
+            <span className="text-neutral-500 text-sm">Contact</span>
           </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }

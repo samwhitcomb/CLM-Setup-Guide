@@ -109,9 +109,9 @@ export function Step4Account() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 100 }}
-            className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4"
+            className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4"
           >
-            <Check className="h-10 w-10 text-green-600" />
+            <Check className="h-10 w-10 text-primary" />
           </motion.div>
           
           <h3 className="text-xl font-medium text-center mb-2">Account Setup Complete</h3>
@@ -145,8 +145,8 @@ export function Step4Account() {
         <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 4 of 9</span>
       </div>
       
-      <p className="text-neutral-700 mb-6">
-        Create an account to enable cloud syncing, personalized settings, and access to all features of your CLM PRO launch monitor.
+      <p className="text-neutral-600 text-sm mb-6">
+        Create an account to enable cloud syncing, personalized settings, and access to all features of your Rapsodo CLM PRO.
       </p>
 
       <div className="md:w-4/5 mx-auto">
@@ -164,7 +164,7 @@ export function Step4Account() {
                   <span>Create Your Account</span>
                 </CardTitle>
                 <CardDescription>
-                  Get started with your CLM PRO device
+                  Get started with your Rapsodo GOLF device
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -262,7 +262,7 @@ export function Step4Account() {
               <CardHeader>
                 <CardTitle>Log In</CardTitle>
                 <CardDescription>
-                  Access your existing CLM PRO account
+                  Access your existing Rapsodo GOLF account
                 </CardDescription>
               </CardHeader>
               <CardContent>

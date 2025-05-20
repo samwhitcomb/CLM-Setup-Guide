@@ -85,15 +85,15 @@ export function ConnectionModal({ onClose, onComplete, deviceName }: ConnectionM
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-pulse">
                 <Wifi className="text-primary h-8 w-8" />
               </div>
-              <h3 className="text-xl font-semibold">Connecting to Device</h3>
-              <p className="text-neutral-600 text-sm">Searching for {deviceName}...</p>
+              <h3 className="text-xl font-semibold">Binding Device</h3>
+              <p className="text-neutral-600 text-sm">Binding device...</p>
             </>
           )}
           
           {connectionStatus === 'success' && (
             <>
-              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="text-green-600 h-8 w-8" />
+              <div className="w-16 h-16 rounded-full bg-[#DCF0A4]/20 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="text-[#BCD879] h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold">Connection Successful</h3>
               <p className="text-neutral-600 text-sm">Connected to {deviceName}</p>
@@ -151,7 +151,7 @@ export function ConnectionModal({ onClose, onComplete, deviceName }: ConnectionM
         
         {connectionStatus === 'success' && (
           <div className="space-y-4">
-            <div className="bg-green-50 p-4 rounded-lg border border-green-200 text-sm text-green-800">
+            <div className="bg-[#DCF0A4]/20 p-4 rounded-lg border border-[#BCD879] text-sm text-[#5C616B]">
               Your device is now connected and ready to use. You can proceed to the next step of the setup process.
             </div>
             

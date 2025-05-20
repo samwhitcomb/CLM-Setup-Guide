@@ -9,8 +9,8 @@ function App() {
   return (
     <Switch>
       <Route path="/auth" component={AuthPage} />
+      <Route path="/onboarding" component={OnboardingPage} />
       <ProtectedRoute path="/" component={HomePage} />
-      <ProtectedRoute path="/onboarding" component={OnboardingPage} />
       <Route component={NotFound} />
     </Switch>
   );
