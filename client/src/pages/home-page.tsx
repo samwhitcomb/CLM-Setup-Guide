@@ -115,8 +115,14 @@ export default function HomePage() {
                   variant="outline" 
                   className="w-full"
                   onClick={() => {
-                    resetOnboarding();
-                    navigate("/onboarding");
+                    if (typeof resetOnboarding === 'function') {
+                      resetOnboarding();
+                      navigate("/onboarding");
+                    } else {
+                      console.error("resetOnboarding is not a function", resetOnboarding);
+                      // Still navigate even if reset fails
+                      navigate("/onboarding");
+                    }
                   }}
                 >
                   Manage Device

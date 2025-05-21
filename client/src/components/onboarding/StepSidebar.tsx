@@ -1,5 +1,6 @@
 import { useOnboarding } from "@/lib/onboarding-context";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type StepInfo = {
   number: number;
@@ -71,6 +72,19 @@ export function StepSidebar() {
     return acc;
   }, {} as Record<string, StepInfo[]>);
 
+  // Function to safely handle step navigation
+  const handleStepClick = (stepNumber: number) => {
+    if (typeof setCurrentStep === 'function') {
+      try {
+        setCurrentStep(stepNumber);
+      } catch (error) {
+        console.error("Error setting current step:", error);
+      }
+    } else {
+      console.error("setCurrentStep is not a function", setCurrentStep);
+    }
+  };
+
   return (
     <div className="w-full md:w-64 mb-6 md:mb-0">
       <div className="bg-white rounded-lg shadow-sm p-4">
@@ -82,13 +96,15 @@ export function StepSidebar() {
                 {stage}
               </h4>
               {stageSteps.map((step) => (
-                <div
+                <Button
                   key={step.number}
-                  onClick={() => setCurrentStep(step.number)}
+                  type="button"
+                  variant="ghost"
+                  onClick={() => handleStepClick(step.number)}
                   className={cn(
-                    "p-3 rounded-lg cursor-pointer transition-colors",
+                    "w-full justify-start p-3 h-auto font-normal",
                     currentStep === step.number
-                      ? "bg-[#CD1B32] text-white"
+                      ? "bg-[#CD1B32] text-white hover:bg-[#CD1B32]/90 hover:text-white"
                       : "hover:bg-neutral-100"
                   )}
                 >
@@ -103,12 +119,12 @@ export function StepSidebar() {
                     >
                       {step.number + 1}
                     </div>
-                    <div>
+                    <div className="text-left">
                       <h4 className="font-medium text-sm">{step.title}</h4>
                       <p className="text-xs opacity-80">{step.description}</p>
                     </div>
                   </div>
-                </div>
+                </Button>
               ))}
             </div>
           ))}

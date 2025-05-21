@@ -102,6 +102,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             <Label htmlFor="username">Username</Label>
             <Input
               id="username"
+              autoComplete="username"
               {...registerField("username")}
               className={errors.username ? "border-red-500" : ""}
               placeholder="Enter your username"
@@ -116,6 +117,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             <Input
               id="email"
               type="email"
+              autoComplete="email"
               {...registerField("email")}
               className={errors.email ? "border-red-500" : ""}
               placeholder="Enter your email address"
@@ -130,6 +132,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             <Input
               id="password"
               type="password"
+              autoComplete="new-password"
               {...registerField("password")}
               className={errors.password ? "border-red-500" : ""}
               placeholder="Enter your password"
@@ -143,6 +146,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             <Label htmlFor="fullName">Full Name</Label>
             <Input
               id="fullName"
+              autoComplete="name"
               {...registerField("fullName")}
               className={errors.fullName ? "border-red-500" : ""}
               placeholder="Enter your full name"
