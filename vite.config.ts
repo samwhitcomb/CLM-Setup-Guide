@@ -23,6 +23,7 @@ export default defineConfig({
     outDir: "dist",
     emptyOutDir: true,
     assetsDir: 'assets',
+    cssCodeSplit: true,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'client/index.html'),
@@ -32,6 +33,16 @@ export default defineConfig({
         entryFileNames: "assets/[name].[hash].js",
         chunkFileNames: "assets/[name].[hash].js",
         assetFileNames: "assets/[name].[hash].[ext]",
+      },
+    },
+  },
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/styles/variables.scss";`,
       },
     },
   },
