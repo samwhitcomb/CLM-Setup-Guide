@@ -32,7 +32,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Link } from "wouter";
 
 export function Step9Onboarding() {
-  const { goToNextStep, resetOnboarding } = useOnboarding();
+  const { resetOnboarding } = useOnboarding();
   const { user } = useAuth();
   const [setupComplete, setSetupComplete] = useState(false);
   

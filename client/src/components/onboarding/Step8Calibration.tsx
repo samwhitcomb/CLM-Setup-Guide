@@ -35,7 +35,7 @@ type CalibrationStep = 1 | 2 | 3 | 4;
 
 export function Step8Calibration() {
   const { goToNextStep, goToPreviousStep } = useOnboarding();
-  const [ceilingHeight, setCeilingHeight] = useState(9);
+  const ceilingHeight = 9;
   const [screenDistance, setScreenDistance] = useState(10);
   const [calibrationStep, setCalibrationStep] = useState<CalibrationStep>(1);
   const [calibrating, setCalibrating] = useState(false);

@@ -15,7 +15,6 @@ import {
   Settings, 
   BarChart, 
   Activity, 
-  ArrowRight,
   RotateCcw,
   Clock,
   Trophy,
