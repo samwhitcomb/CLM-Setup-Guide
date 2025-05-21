@@ -1,0 +1,79 @@
+1. **Download the Companion App or Software**
+    - **Purpose**: Provide the setup interface.
+    - **Steps**:
+        - Prompt users to download the app via a QR code in the quick-start guide or packaging.
+        - Confirm compatibility with the user’s device.
+    - **Subscription Note**: No subscription mention here to keep the focus on starting setup.
+    - **User Feedback**: Show a welcome screen after app installation.
+2. **Physical Installation and Wiring**
+    - **Purpose**: Mount the device to the ceiling and connect power/Ethernet.
+    - **Steps**:
+        - Guide users through ceiling mounting, power connection, and Ethernet wiring via in-app instructions, videos, or animations.
+        - Offer safety warnings and professional installation options.
+    - **Subscription Note**: Avoid subscription prompts here, as users are focused on hardware setup.
+    - **User Feedback**: Confirm mounting and wiring completion (e.g., “Is the device securely mounted?”).
+3. **Power On the Launch Monitor**
+    - **Purpose**: Activate the device and confirm connectivity.
+    - **Steps**:
+        - Instruct users to power on the device and check for LED indicators.
+        - Verify Ethernet connection.
+    - **Subscription Note**: Still too early for subscription prompts; prioritize hardware functionality.
+    - **User Feedback**: Show “Device Powered On” in the app.
+4. **Create or Log Into a User Account**
+    - **Purpose**: Enable cloud syncing and personalized settings.
+    - **Steps**:
+        - Prompt users to create an account (email, phone, or social login) with minimal fields.
+        - Send a verification email/SMS.
+        - Offer a “Guest Mode” for immediate setup (limited features, no subscription access).
+    - **Subscription Integration**:
+        - After account creation, briefly introduce the 1-month free trial (e.g., “Unlock all features with a 1-month free trial!”).
+        - Present two options:
+            - **Add Payment Details**: Users enter credit card or payment info to activate the trial, with no charge until the trial ends. Highlight benefits (e.g., “Seamless access to shot analytics and simulator integration”).
+            - **Skip for Now**: Users start the trial without payment details but are warned that payment will be required to continue after 30 days.
+        - Use clear, transparent language (e.g., “No charge until [date]. Cancel anytime in Settings”).
+        - If users skip, store their trial status (e.g., “Trial Active: 30 days remaining”) and remind them later (e.g., at onboarding or via push notifications).
+    - **Rationale**: Placing the subscription prompt after account creation ensures users are invested in the setup process but haven’t yet reached critical steps like calibration. Offering a skip option reduces friction, while capturing payment details from eager users streamlines future billing.
+    - **Smart Product Inspiration**: Similar to Peloton’s trial model, where users can start without payment but are prompted to add details for full access.
+    - **User Feedback**: Confirm account creation and trial activation (e.g., “Your 1-month free trial is active!”).
+5. **Connect the App to the Launch Monitor**
+    - **Purpose**: Link the app to the device via Ethernet.
+    - **Steps**:
+        - Scan for the device on the network and confirm its ID.
+        - Troubleshoot if needed (e.g., check Ethernet cable).
+    - **Subscription Note**: If the user skipped payment details, the app may show a subtle reminder (e.g., “Trial active. Add payment to ensure uninterrupted access”). Avoid blocking progress.
+    - **User Feedback**: Show “Connected Successfully.”
+6. **Bind the Device to the User Account**
+    - **Purpose**: Secure the device to the user’s account.
+    - **Steps**:
+        - Prompt users to claim the device and assign a nickname.
+        - Confirm binding.
+    - **Subscription Note**: No prompt here to avoid overwhelming users during technical steps.
+    - **User Feedback**: Confirm device binding.
+7. **Check and Install Firmware Updates**
+    - **Purpose**: Ensure the device runs the latest software.
+    - **Steps**:
+        - Check for updates via Ethernet and prompt installation if needed.
+        - Show progress and warn against disconnecting power/Ethernet.
+    - **Subscription Note**: No prompt; focus on completing setup.
+    - **User Feedback**: Confirm “Firmware Updated Successfully.”
+8. **Calibrate the Launch Monitor**
+    - **Purpose**: Optimize accuracy for the ceiling-mounted setup.
+    - **Steps**:
+        - Guide users to input ceiling height, hit test shots, and adjust for lighting or net distance.
+        - Save calibration settings.
+    - **Subscription Note**: If the user skipped payment, a subtle in-app banner (e.g., “Enjoying setup? Add payment to continue after your trial”) can reinforce the trial’s value without interrupting calibration.
+    - **User Feedback**: Show “Calibration Complete” with test shot data.
+9. **Onboarding and First Use**
+    - **Purpose**: Introduce features and prepare for regular use.
+    - **Steps**:
+        - Show a tutorial on features (e.g., analytics, simulator integration).
+        - Set preferences (e.g., units, club type).
+        - Offer “Quick Start” or “Guided Practice” modes.
+    - **Subscription Integration**:
+        - If the user skipped payment details earlier, prompt again at the end of onboarding (e.g., “Your trial is active! Add payment now to avoid interruption”).
+        - Highlight premium features unlocked by the subscription (e.g., “Access advanced analytics and cloud storage with your subscription”).
+        - Provide a clear link to the subscription management page (e.g., redirect to https://x.ai/grok for details, per xAI guidelines).
+        - Send a follow-up email or push notification summarizing the trial (e.g., “Your 1-month trial started today. Add payment by [date] to continue”).
+    - **Rationale**: Onboarding is a natural point to reinforce the subscription’s value, as users have experienced the setup and seen the product’s potential. A final prompt catches users who skipped earlier.
+    - **Smart Product Inspiration**: Like Strava’s freemium model, where premium features are highlighted post-setup to encourage upgrades.
+    - **User Feedback**: End with “You’re Ready!” and show trial status (e.g., “Trial: 30 days left”).

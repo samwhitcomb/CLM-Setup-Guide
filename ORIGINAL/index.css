@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 347 76% 46%; /* Rapsodo red (#CD1B32) */
+  --primary-foreground: 0 0% 100%; /* White text on red */
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --accent: 347 76% 46%; /* Match primary color */
+  --accent-foreground: 0 0% 100%; /* White text on red */
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 347 76% 46%;
+  --radius: 0.5rem;
+  
+  /* Chart colors */
+  --chart-1: 347 76% 46%; /* Primary red */
+  --chart-2: 210 80% 56%; /* Blue */
+  --chart-3: 45 93% 47%; /* Yellow */
+  --chart-4: 262 83% 58%; /* Purple */
+  --chart-5: 187 75% 44%; /* Cyan */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 150 68% 40%;
+  --primary-foreground: 0 0% 0%; /* Changed to black */
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 142 71% 45%;
+  --accent-foreground: 0 0% 0%; /* Changed to black */
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-neutral-100 text-neutral-800;
+  }
+}
+
+/* Step progress styling */
+.step-progress {
+  position: relative;
+}
+
+.step-progress::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 16px;
+  width: 1px;
+  height: calc(100% - 32px);
+  background-color: hsl(var(--border));
+  z-index: 0;
+}
+
+.step-complete::before {
+  background-color: hsl(var(--primary));
+}
+
+.step-current {
+  border-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+.step-icon {
+  background-color: hsl(var(--background));
+  position: relative;
+  z-index: 1;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
