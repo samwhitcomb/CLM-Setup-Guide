@@ -10,34 +10,42 @@ export default defineConfig({
   plugins: [
     react(),
     runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-        ]
-      : []),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "client", "src"),
+      "@": path.resolve(__dirname, "./src"),
       "@shared": path.resolve(__dirname, "shared"),
-      "@assets": path.resolve(__dirname, "attached_assets"),
+      "@assets": path.resolve(__dirname, "assets"),
     },
   },
-  root: path.resolve(__dirname, "client"),
+  base: "/CLM-Setup-Guide/",
   build: {
-    outDir: path.resolve(__dirname, "dist/public"),
+    outDir: "dist",
     emptyOutDir: true,
+    assetsDir: 'assets',
+    cssCodeSplit: true,
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+  },
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
   },
   server: {
-    host: '0.0.0.0',
     port: 3000,
-    strictPort: true,
+    host: true,
     cors: true,
     hmr: {
-      clientPort: 443,
+      overlay: true,
     }
   }
 });
