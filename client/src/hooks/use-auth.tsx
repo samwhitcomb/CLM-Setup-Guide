@@ -1,23 +1,14 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  fullName: string;
-  currentStep?: number;
-  paymentAdded?: boolean;
-  trialActive?: boolean;
-}
+import { User, login as mockLogin, register as mockRegister } from "@/lib/mockAuth";
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
-  register: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+  register: (credentials: { username: string; email: string; password: string; fullName: string; receiveUpdates?: boolean }) => Promise<void>;
   logout: () => void;
   loginMutation: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
-  registerMutation: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+  registerMutation: (credentials: { username: string; email: string; password: string; fullName: string; receiveUpdates?: boolean }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,34 +20,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (credentials: { username: string; password: string; fullName: string }) => {
     setIsLoading(true);
     try {
-      // Mock login - in a real app, this would make an API call
-      setUser({
-        id: Math.random().toString(36).substr(2, 9),
-        username: credentials.username,
-        email: `${credentials.username}@example.com`,
-        fullName: credentials.fullName,
-        currentStep: 0,
-        paymentAdded: false,
-        trialActive: true
-      });
+      // Use the mock login function from mockAuth.ts
+      const result = await mockLogin(credentials);
+      setUser(result.user);
+    } catch (error) {
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (credentials: { username: string; password: string; fullName: string }) => {
+  const register = async (credentials: { username: string; email: string; password: string; fullName: string; receiveUpdates?: boolean }) => {
     setIsLoading(true);
     try {
-      // Mock registration - in a real app, this would make an API call
-      setUser({
-        id: Math.random().toString(36).substr(2, 9),
-        username: credentials.username,
-        email: `${credentials.username}@example.com`,
-        fullName: credentials.fullName,
-        currentStep: 0,
-        paymentAdded: false,
-        trialActive: true
-      });
+      // Use the mock register function from mockAuth.ts
+      const result = await mockRegister(credentials);
+      setUser(result.user);
+    } catch (error) {
+      console.error("Registration error:", error);
     } finally {
       setIsLoading(false);
     }
