@@ -11,6 +11,8 @@ const formSchema = z.object({
     .min(3, "Username must be at least 3 characters")
     .max(20, "Username must be less than 20 characters")
     .regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens"),
+  email: z.string()
+    .email("Please enter a valid email address"),
   password: z.string()
     .min(6, "Password must be at least 6 characters")
     .max(50, "Password must be less than 50 characters")
@@ -39,6 +41,9 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
     setError,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: ""
+    }
   });
 
   const onSubmit = async (data: FormData) => {
@@ -90,6 +95,20 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             />
             {errors.username && (
               <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              {...registerField("email")}
+              className={errors.email ? "border-red-500" : ""}
+              placeholder="Enter your email address"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
 
