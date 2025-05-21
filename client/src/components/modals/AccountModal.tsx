@@ -39,6 +39,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    getValues
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,6 +70,18 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
         type: "manual",
         message: "Registration failed. The username may already be taken.",
       });
+    }
+  };
+
+  // New handler for register button click
+  const handleRegisterClick = () => {
+    const data = getValues();
+    // Validate the form
+    if (formSchema.safeParse(data).success) {
+      onRegister(data);
+    } else {
+      // Trigger form validation
+      handleSubmit(() => {})(new Event('') as any);
     }
   };
 
@@ -149,7 +162,7 @@ export function AccountModal({ isOpen, onClose }: AccountModalProps) {
             </Button>
             <Button
               type="button"
-              onClick={handleSubmit(onRegister)}
+              onClick={handleRegisterClick}
               variant="outline"
               className="flex-1"
               disabled={isSubmitting}
