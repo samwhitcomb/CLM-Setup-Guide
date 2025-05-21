@@ -3,8 +3,6 @@ import { useOnboarding } from "@/lib/onboarding-context";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 
-type Unit = "inches" | "cm" | "feet" | "meters";
-
 export function Step0RoomPreparation() {
   const { goToNextStep } = useOnboarding();
   const [roomSize, setRoomSize] = useState(200);
