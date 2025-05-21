@@ -33,7 +33,7 @@ export default function HomePage() {
   useEffect(() => {
     // Assume a first-time user should be directed to the onboarding flow
     // You could check if they've completed onboarding by checking the current step
-    if (user && user.currentStep < 9) {
+    if (user && (user.currentStep ?? 0) < 9) {
       navigate("/onboarding");
     }
   }, [user, navigate]);

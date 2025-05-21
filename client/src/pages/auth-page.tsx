@@ -39,11 +39,11 @@ const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   fullName: z.string().min(1, "Full name is required"),
-  receiveUpdates: z.boolean().default(false),
+  receiveUpdates: z.boolean(),
 });
 
 export default function AuthPage() {
-  const { user, loginMutation, registerMutation } = useAuth();
+  const { user, loginMutation, registerMutation, isLoading } = useAuth();
   const [, navigate] = useLocation();
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
@@ -74,12 +74,12 @@ export default function AuthPage() {
     registerForm.setValue(field, mockRegisterData[field]);
   };
 
-  const onLoginSubmit = (data: z.infer<typeof loginSchema>) => {
-    loginMutation.mutate(data);
+  const onLoginSubmit = async (data: z.infer<typeof loginSchema>) => {
+    await loginMutation({ ...data, fullName: "" });
   };
 
-  const onRegisterSubmit = (data: z.infer<typeof registerSchema>) => {
-    registerMutation.mutate(data);
+  const onRegisterSubmit = async (data: z.infer<typeof registerSchema>) => {
+    await registerMutation(data);
   };
 
   // Redirect to home if already logged in
@@ -160,9 +160,9 @@ export default function AuthPage() {
                         <Button
                           type="submit"
                           className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
-                          disabled={loginMutation.isLoading}
+                          disabled={isLoading}
                         >
-                          {loginMutation.isLoading ? "Logging in..." : "Login"}
+                          {isLoading ? "Logging in..." : "Login"}
                         </Button>
                       </form>
                     </Form>
@@ -273,9 +273,9 @@ export default function AuthPage() {
                         <Button
                           type="submit"
                           className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
-                          disabled={registerMutation.isLoading}
+                          disabled={isLoading}
                         >
-                          {registerMutation.isLoading ? "Creating Account..." : "Create Account"}
+                          {isLoading ? "Creating Account..." : "Create Account"}
                         </Button>
                       </form>
                     </Form>

@@ -1,34 +1,44 @@
 import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
-type OnboardingContextType = {
+interface OnboardingContextType {
   currentStep: number;
   setCurrentStep: (step: number) => void;
   isComplete: boolean;
   setIsComplete: (complete: boolean) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-};
+  resetOnboarding: () => void;
+}
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const [currentStep, setCurrentStep] = useState(0);
+  const initialStep: number = user?.currentStep ?? 0;
+  const [currentStep, setCurrentStep] = useState<number>(initialStep);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
     if (user) {
-      setCurrentStep(user.currentStep);
+      setCurrentStep(user.currentStep ?? 0);
     }
   }, [user]);
 
   const goToNextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 7));
+    if (currentStep < 8) {
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const goToPreviousStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const resetOnboarding = () => {
+    setCurrentStep(0);
   };
 
   return (
@@ -40,6 +50,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         setIsComplete,
         goToNextStep,
         goToPreviousStep,
+        resetOnboarding,
       }}
     >
       {children}

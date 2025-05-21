@@ -1,116 +1,77 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-import { useLocation } from "wouter";
-import { useToast } from "@/hooks/use-toast";
-import { mockLogin, mockRegister, mockLogout, type User, type LoginCredentials, type RegisterCredentials } from "@/lib/mockAuth";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-type AuthContextType = {
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  fullName: string;
+  currentStep?: number;
+  paymentAdded?: boolean;
+  trialActive?: boolean;
+}
+
+interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  error: Error | null;
-  loginMutation: {
-    mutate: (credentials: LoginCredentials) => void;
-    isLoading: boolean;
-  };
-  logoutMutation: {
-    mutate: () => void;
-    isLoading: boolean;
-  };
-  registerMutation: {
-    mutate: (credentials: RegisterCredentials) => void;
-    isLoading: boolean;
-  };
-};
+  login: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+  register: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+  logout: () => void;
+  loginMutation: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+  registerMutation: (credentials: { username: string; password: string; fullName: string }) => Promise<void>;
+}
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { toast } = useToast();
-  const [, navigate] = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
 
-  const loginMutation = {
-    mutate: async (credentials: LoginCredentials) => {
-      setIsLoading(true);
-      try {
-        const user = await mockLogin(credentials);
-        setUser(user);
-        toast({
-          title: "Login successful",
-          description: `Welcome back, ${user.fullName || user.username}!`,
-        });
-        navigate("/onboarding");
-      } catch (error) {
-        toast({
-          title: "Login failed",
-          description: error instanceof Error ? error.message : "An error occurred",
-          variant: "destructive",
-        });
-        setError(error instanceof Error ? error : new Error("An error occurred"));
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    isLoading: false,
+  const login = async (credentials: { username: string; password: string; fullName: string }) => {
+    setIsLoading(true);
+    try {
+      // Mock login - in a real app, this would make an API call
+      setUser({
+        id: Math.random().toString(36).substr(2, 9),
+        username: credentials.username,
+        email: `${credentials.username}@example.com`,
+        fullName: credentials.fullName,
+        currentStep: 0,
+        paymentAdded: false,
+        trialActive: true
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const registerMutation = {
-    mutate: async (credentials: RegisterCredentials) => {
-      setIsLoading(true);
-      try {
-        const user = await mockRegister(credentials);
-        setUser(user);
-        toast({
-          title: "Registration successful",
-          description: `Welcome, ${user.fullName || user.username}!`,
-        });
-        navigate("/onboarding");
-      } catch (error) {
-        toast({
-          title: "Registration failed",
-          description: error instanceof Error ? error.message : "An error occurred",
-          variant: "destructive",
-        });
-        setError(error instanceof Error ? error : new Error("An error occurred"));
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    isLoading: false,
+  const register = async (credentials: { username: string; password: string; fullName: string }) => {
+    setIsLoading(true);
+    try {
+      // Mock registration - in a real app, this would make an API call
+      setUser({
+        id: Math.random().toString(36).substr(2, 9),
+        username: credentials.username,
+        email: `${credentials.username}@example.com`,
+        fullName: credentials.fullName,
+        currentStep: 0,
+        paymentAdded: false,
+        trialActive: true
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logoutMutation = {
-    mutate: async () => {
-      setIsLoading(true);
-      try {
-        await mockLogout();
-        setUser(null);
-        navigate("/auth");
-      } catch (error) {
-        toast({
-          title: "Logout failed",
-          description: error instanceof Error ? error.message : "An error occurred",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    isLoading: false,
+  const logout = () => {
+    setUser(null);
   };
+
+  // Alias methods for compatibility with existing code
+  const loginMutation = login;
+  const registerMutation = register;
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        error,
-        loginMutation,
-        logoutMutation,
-        registerMutation,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isLoading, login, register, logout, loginMutation, registerMutation }}>
       {children}
     </AuthContext.Provider>
   );

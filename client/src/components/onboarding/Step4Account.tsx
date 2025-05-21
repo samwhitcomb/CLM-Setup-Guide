@@ -42,7 +42,7 @@ const loginSchema = z.object({
 
 export function Step4Account() {
   const { goToNextStep } = useOnboarding();
-  const { registerMutation, loginMutation, user } = useAuth();
+  const { registerMutation, loginMutation, user, isLoading } = useAuth();
   const [accountCreated, setAccountCreated] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
@@ -65,22 +65,16 @@ export function Step4Account() {
     },
   });
 
-  const onRegisterSubmit = (data: z.infer<typeof registerSchema>) => {
-    registerMutation.mutate(data, {
-      onSuccess: () => {
-        setAccountCreated(true);
-        setShowSubscriptionModal(true);
-      },
-    });
+  const onRegisterSubmit = async (data: z.infer<typeof registerSchema>) => {
+    await registerMutation(data);
+    setAccountCreated(true);
+    setShowSubscriptionModal(true);
   };
 
-  const onLoginSubmit = (data: z.infer<typeof loginSchema>) => {
-    loginMutation.mutate(data, {
-      onSuccess: () => {
-        setAccountCreated(true);
-        setShowSubscriptionModal(true);
-      },
-    });
+  const onLoginSubmit = async (data: z.infer<typeof loginSchema>) => {
+    await loginMutation({ ...data, fullName: "" });
+    setAccountCreated(true);
+    setShowSubscriptionModal(true);
   };
 
   const handleContinue = () => {
@@ -247,9 +241,9 @@ export function Step4Account() {
                     <Button
                       type="submit"
                       className="w-full bg-primary hover:bg-primary/90 text-white mt-4"
-                      disabled={registerMutation.isPending}
+                      disabled={isLoading}
                     >
-                      {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+                      {isLoading ? "Creating Account..." : "Create Account"}
                     </Button>
                   </form>
                 </Form>
@@ -297,9 +291,9 @@ export function Step4Account() {
                     <Button
                       type="submit"
                       className="w-full bg-primary hover:bg-primary/90 text-white mt-4"
-                      disabled={loginMutation.isPending}
+                      disabled={isLoading}
                     >
-                      {loginMutation.isPending ? "Logging In..." : "Log In"}
+                      {isLoading ? "Logging In..." : "Log In"}
                     </Button>
                   </form>
                 </Form>
