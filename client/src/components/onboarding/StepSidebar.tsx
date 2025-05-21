@@ -2,12 +2,12 @@ import { useOnboarding } from "@/lib/onboarding-context";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-type StepInfo = {
+interface StepInfo {
   number: number;
   title: string;
   description: string;
   stage: string;
-};
+}
 
 export function StepSidebar() {
   const { currentStep, setCurrentStep } = useOnboarding();
@@ -74,14 +74,14 @@ export function StepSidebar() {
 
   // Function to safely handle step navigation
   const handleStepClick = (stepNumber: number) => {
-    if (typeof setCurrentStep === 'function') {
-      try {
+    try {
+      if (typeof setCurrentStep === 'function') {
         setCurrentStep(stepNumber);
-      } catch (error) {
-        console.error("Error setting current step:", error);
+      } else {
+        console.error("setCurrentStep is not a function");
       }
-    } else {
-      console.error("setCurrentStep is not a function", setCurrentStep);
+    } catch (error) {
+      console.error("Error navigating to step:", error);
     }
   };
 
