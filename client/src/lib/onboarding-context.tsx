@@ -1,53 +1,33 @@
 import { createContext, ReactNode, useContext, useState, useEffect } from "react";
-import { AuthContext } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";
 
 type OnboardingContextType = {
   currentStep: number;
-  goToNextStep: () => void;
-  goToPreviousStep: () => void;
-  setStep: (step: number) => void;
+  setCurrentStep: (step: number) => void;
+  isComplete: boolean;
+  setIsComplete: (complete: boolean) => void;
 };
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
-  const authContext = useContext(AuthContext);
-  const user = authContext?.user ?? null;
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 8;
-  
-  // Initialize step from user data if available
+  const { user } = useAuth();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+
   useEffect(() => {
-    if (user && user.currentStep) {
+    if (user) {
       setCurrentStep(user.currentStep);
     }
   }, [user]);
-  
-  const goToNextStep = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-  
-  const goToPreviousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-  
-  const setStep = (step: number) => {
-    if (step >= 1 && step <= totalSteps) {
-      setCurrentStep(step);
-    }
-  };
-  
+
   return (
     <OnboardingContext.Provider
       value={{
         currentStep,
-        goToNextStep,
-        goToPreviousStep,
-        setStep,
+        setCurrentStep,
+        isComplete,
+        setIsComplete,
       }}
     >
       {children}
