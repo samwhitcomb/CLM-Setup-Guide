@@ -1,9 +1,12 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { mockUser, mockAuth } from './mockData';
 
-// Base URL for API requests - use current origin if on ngrok
-const API_BASE_URL = window.location.hostname.includes('ngrok-free.app') 
-  ? window.location.origin 
-  : '';
+// Base URL for API requests
+const API_BASE_URL = window.location.hostname.includes('github.io')
+  ? 'https://your-backend-url.com' // Replace with your actual backend URL
+  : window.location.hostname.includes('ngrok-free.app')
+    ? window.location.origin
+    : '';
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -17,38 +20,36 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const fullUrl = url.startsWith('/api') ? `${API_BASE_URL}${url}` : url;
+  // Return mock data for API requests
+  if (url === '/api/user') {
+    return new Response(JSON.stringify(mockUser), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
   
-  const res = await fetch(fullUrl, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
+  // For other API requests, return appropriate mock responses
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
   });
-
-  await throwIfResNotOk(res);
-  return res;
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
+export const getQueryFn: <T = unknown>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const url = queryKey[0] as string;
-    const fullUrl = url.startsWith('/api') ? `${API_BASE_URL}${url}` : url;
     
-    const res = await fetch(fullUrl, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    // Return mock data for user-related queries
+    if (url === '/api/user') {
+      return mockUser as T;
     }
-
-    await throwIfResNotOk(res);
-    return await res.json();
+    
+    // For other queries, return appropriate mock data
+    return { success: true } as T;
   };
 
 export const queryClient = new QueryClient({
