@@ -24,7 +24,9 @@ export default defineConfig({
     emptyOutDir: true,
     assetsDir: 'assets',
     rollupOptions: {
-      input: path.resolve(__dirname, 'client/index.html'),
+      input: {
+        main: path.resolve(__dirname, 'client/index.html'),
+      },
       output: {
         manualChunks: undefined,
         entryFileNames: "assets/[name].[hash].js",

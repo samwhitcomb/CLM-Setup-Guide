@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from 'fs';
+import { copyFileSync, mkdirSync, readdirSync, writeFileSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 // Function to recursively copy files
@@ -20,32 +20,14 @@ function copyDir(src, dest) {
 
 // Create 404.html for SPA routing
 function create404Html() {
-  const content = `<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>CLM Setup Guide</title>
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      var pathSegmentsToKeep = 1;
-
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
-  </head>
-  <body>
-  </body>
-</html>`;
-
-  writeFileSync(join('dist', '404.html'), content);
+  // Read the index.html file
+  const indexHtml = readFileSync(join('dist', 'index.html'), 'utf-8');
+  
+  // Create 404.html with the same content as index.html
+  writeFileSync(join('dist', '404.html'), indexHtml);
+  
+  // Create a .nojekyll file to prevent GitHub Pages from processing the site with Jekyll
+  writeFileSync(join('dist', '.nojekyll'), '');
 }
 
 // Move files from dist/client to dist
