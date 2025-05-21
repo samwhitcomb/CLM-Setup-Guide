@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { X, CheckCircle, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import { ConnectionModal } from "./ConnectionModal";
-import { useAuth } from "@/hooks/use-auth";
 
 interface SubscriptionModalProps {
   onClose: () => void;
@@ -12,7 +11,6 @@ interface SubscriptionModalProps {
 
 export function SubscriptionModal({ onClose, onComplete }: SubscriptionModalProps) {
   const [showConnectionModal, setShowConnectionModal] = useState(false);
-  const { user } = useAuth();
   
   const handleAddPayment = () => {
     setShowConnectionModal(true);

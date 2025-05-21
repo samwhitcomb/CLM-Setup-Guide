@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useForm } from "react-hook-form";
@@ -13,10 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, X } from "lucide-react";
-import { SubscriptionModal } from "./SubscriptionModal";
-import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
