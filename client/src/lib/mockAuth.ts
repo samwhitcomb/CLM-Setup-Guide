@@ -3,6 +3,7 @@ export type LoginCredentials = {
   username: string;
   password: string;
   fullName?: string;
+  email?: string;
 };
 
 export type RegisterCredentials = {
@@ -42,6 +43,7 @@ export const mockLogin = async (credentials: LoginCredentials): Promise<{user: U
       ...mockUser,
       username: credentials.username,
       fullName: credentials.fullName || 'Demo User',
+      email: credentials.email || `${credentials.username}@example.com`,
     },
     token: 'mock-token',
   };
