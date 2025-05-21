@@ -13,7 +13,7 @@ import { StepErrorBoundary } from "@/components/error/StepErrorBoundary";
 import bracketInstallation from "@/assets/images/bracket-installation.gif";
 import deviceMounting from "@/assets/images/device-mounting.gif";
 
-export function Step2Installation({ onComplete, onBack }: StepProps) {
+export function Step2Installation({ onComplete }: StepProps) {
   const { 
     state: { currentPage },
     handleNext,

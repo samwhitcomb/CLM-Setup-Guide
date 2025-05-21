@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useOnboarding } from "@/lib/onboarding-context";
 import { Button } from "@/components/ui/button";
 import { 
@@ -8,7 +8,6 @@ import {
   Ruler, 
   Club, 
   Maximize,
-  AlertCircle,
   Video,
   Target,
   AlertTriangle,
@@ -42,7 +41,6 @@ export function Step8Calibration() {
   const [calibrating, setCalibrating] = useState(false);
   const [calibrationComplete, setCalibrationComplete] = useState(false);
   const [testShots, setTestShots] = useState<any[]>([]);
-  const [azimuthAligned, setAzimuthAligned] = useState(false);
   const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>({
     pitch: 0,
     roll: 0,
@@ -51,11 +49,6 @@ export function Step8Calibration() {
   });
   const [calibrationProgress, setCalibrationProgress] = useState(0);
   const [environmentIssues, setEnvironmentIssues] = useState<string[]>([]);
-  
-  const handleCeilingHeightChange = (value: number[]) => {
-    setCeilingHeight(value[0]);
-    setDeviceStatus(prev => ({ ...prev, height: value[0] }));
-  };
   
   const handleScreenDistanceChange = (value: number[]) => {
     const newDistance = value[0];
@@ -70,7 +63,6 @@ export function Step8Calibration() {
     // Simulate device status check
     setTimeout(() => {
       const isAligned = Math.random() > 0.5;
-      setAzimuthAligned(isAligned);
       setDeviceStatus(prev => ({
         ...prev,
         pitch: Math.random() * 2 - 1, // Random pitch between -1 and 1

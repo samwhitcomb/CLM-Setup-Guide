@@ -30,7 +30,7 @@ export function Step5ConnectDevice() {
     setDeviceConnected(true);
   };
 
-  const handleConnect = (deviceId: string) => {
+  const handleConnect = () => {
     setShowConnectionModal(true);
   };
 
@@ -145,7 +145,7 @@ export function Step5ConnectDevice() {
                         <Button 
                           size="sm" 
                           className="bg-primary hover:bg-primary/90 text-white"
-                          onClick={() => handleConnect(device)}
+                          onClick={handleConnect}
                         >
                           Connect
                         </Button>

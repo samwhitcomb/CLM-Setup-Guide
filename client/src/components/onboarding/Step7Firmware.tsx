@@ -14,7 +14,7 @@ export function Step7Firmware() {
   const [updateComplete, setUpdateComplete] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentVersion, setCurrentVersion] = useState("v2.0.5");
-  const [latestVersion, setLatestVersion] = useState("v2.1.3");
+  const latestVersion = "v2.1.3";
 
   useEffect(() => {
     // Simulate checking for updates

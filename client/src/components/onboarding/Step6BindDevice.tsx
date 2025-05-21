@@ -24,7 +24,6 @@ import {
   CreditCard, 
   CalendarClock, 
   Gift, 
-  X, 
   ChevronRight,
   ChevronLeft
 } from "lucide-react";

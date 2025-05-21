@@ -17,7 +17,7 @@ import { useStep } from "@/hooks/use-step";
 import { StepProps, PageContent } from "@/types/step";
 import { StepErrorBoundary } from "@/components/error/StepErrorBoundary";
 
-export function Step1PhysicalInstallation({ onComplete, onBack }: StepProps) {
+export function Step1PhysicalInstallation({ onComplete }: StepProps) {
   const { user } = useAuth();
   const { 
     state: { currentPage },
