@@ -1,110 +1,109 @@
-import { createContext, ReactNode, useContext } from "react";
-import {
-  useQuery,
-  useMutation,
-  UseMutationResult,
-} from "@tanstack/react-query";
-import { insertUserSchema, User as SelectUser, InsertUser, LoginUser } from "@shared/schema";
-import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useLocation } from "wouter";
+import { useToast } from "@/hooks/use-toast";
+import { mockLogin, mockRegister, mockLogout, type User, type LoginCredentials, type RegisterCredentials } from "@/lib/mockAuth";
 
 type AuthContextType = {
-  user: SelectUser | null;
+  user: User | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: UseMutationResult<SelectUser, Error, LoginUser>;
-  logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<SelectUser, Error, InsertUser>;
+  loginMutation: {
+    mutate: (credentials: LoginCredentials) => void;
+    isLoading: boolean;
+  };
+  logoutMutation: {
+    mutate: () => void;
+    isLoading: boolean;
+  };
+  registerMutation: {
+    mutate: (credentials: RegisterCredentials) => void;
+    isLoading: boolean;
+  };
 };
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const [, navigate] = useLocation();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useQuery<SelectUser | null, Error>({
-    queryKey: ["/api/user"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
-    staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
-    gcTime: 10 * 60 * 1000, // Cache is kept for 10 minutes
-    refetchOnWindowFocus: false, // Don't refetch when window regains focus
-  });
+  const loginMutation = {
+    mutate: async (credentials: LoginCredentials) => {
+      setIsLoading(true);
+      try {
+        const user = await mockLogin(credentials);
+        setUser(user);
+        toast({
+          title: "Login successful",
+          description: `Welcome back, ${user.fullName || user.username}!`,
+        });
+        navigate("/onboarding");
+      } catch (error) {
+        toast({
+          title: "Login failed",
+          description: error instanceof Error ? error.message : "An error occurred",
+          variant: "destructive",
+        });
+        setError(error instanceof Error ? error : new Error("An error occurred"));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    isLoading: false,
+  };
 
-  const loginMutation = useMutation({
-    mutationFn: async (credentials: LoginUser) => {
-      const res = await apiRequest("POST", "/api/login", credentials);
-      return await res.json();
+  const registerMutation = {
+    mutate: async (credentials: RegisterCredentials) => {
+      setIsLoading(true);
+      try {
+        const user = await mockRegister(credentials);
+        setUser(user);
+        toast({
+          title: "Registration successful",
+          description: `Welcome, ${user.fullName || user.username}!`,
+        });
+        navigate("/onboarding");
+      } catch (error) {
+        toast({
+          title: "Registration failed",
+          description: error instanceof Error ? error.message : "An error occurred",
+          variant: "destructive",
+        });
+        setError(error instanceof Error ? error : new Error("An error occurred"));
+      } finally {
+        setIsLoading(false);
+      }
     },
-    onSuccess: (user: SelectUser) => {
-      queryClient.setQueryData(["/api/user"], user);
-      toast({
-        title: "Login successful",
-        description: `Welcome back, ${user.fullName || user.username}!`,
-      });
-      navigate("/onboarding");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Login failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+    isLoading: false,
+  };
 
-  const registerMutation = useMutation({
-    mutationFn: async (credentials: InsertUser) => {
-      const res = await apiRequest("POST", "/api/register", credentials);
-      return await res.json();
+  const logoutMutation = {
+    mutate: async () => {
+      setIsLoading(true);
+      try {
+        await mockLogout();
+        setUser(null);
+        navigate("/auth");
+      } catch (error) {
+        toast({
+          title: "Logout failed",
+          description: error instanceof Error ? error.message : "An error occurred",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     },
-    onSuccess: (user: SelectUser) => {
-      queryClient.setQueryData(["/api/user"], user);
-      toast({
-        title: "Registration successful",
-        description: `Welcome, ${user.fullName || user.username}!`,
-      });
-      navigate("/onboarding");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Registration failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      await apiRequest("POST", "/api/logout");
-    },
-    onSuccess: () => {
-      queryClient.setQueryData(["/api/user"], null);
-      toast({
-        title: "Logged out",
-        description: "You have been successfully logged out.",
-      });
-      navigate("/auth");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Logout failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+    isLoading: false,
+  };
 
   return (
     <AuthContext.Provider
       value={{
-        user: user ?? null,
+        user,
         isLoading,
         error,
         loginMutation,

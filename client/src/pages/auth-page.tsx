@@ -14,17 +14,32 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Club, UserPlus, LogIn } from "lucide-react";
 
+// Mock data for auto-fill
+const mockLoginData = {
+  username: "demo_user",
+  password: "demo123",
+};
+
+const mockRegisterData = {
+  username: "new_user",
+  email: "demo@example.com",
+  password: "demo123",
+  fullName: "Demo User",
+  receiveUpdates: true,
+};
+
+// Validation schemas
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
 const registerSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  fullName: z.string().min(2, "Full name is required"),
-  receiveUpdates: z.boolean().optional(),
+  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  fullName: z.string().min(1, "Full name is required"),
+  receiveUpdates: z.boolean().default(false),
 });
 
 export default function AuthPage() {
@@ -49,6 +64,15 @@ export default function AuthPage() {
       receiveUpdates: false,
     },
   });
+
+  // Auto-fill functions
+  const handleLoginFieldClick = (field: keyof typeof mockLoginData) => {
+    loginForm.setValue(field, mockLoginData[field]);
+  };
+
+  const handleRegisterFieldClick = (field: keyof typeof mockRegisterData) => {
+    registerForm.setValue(field, mockRegisterData[field]);
+  };
 
   const onLoginSubmit = (data: z.infer<typeof loginSchema>) => {
     loginMutation.mutate(data);
@@ -100,7 +124,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Username</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input placeholder="Your username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleLoginFieldClick("username")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -114,7 +138,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                <Input type="password" placeholder="Your password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input type="password" placeholder="Your password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleLoginFieldClick("password")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -136,9 +160,9 @@ export default function AuthPage() {
                         <Button
                           type="submit"
                           className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
-                          disabled={loginMutation.isPending}
+                          disabled={loginMutation.isLoading}
                         >
-                          {loginMutation.isPending ? "Logging in..." : "Login"}
+                          {loginMutation.isLoading ? "Logging in..." : "Login"}
                         </Button>
                       </form>
                     </Form>
@@ -167,7 +191,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="your@email.com" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input placeholder="your@email.com" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleRegisterFieldClick("email")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -181,7 +205,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Username</FormLabel>
                               <FormControl>
-                                <Input placeholder="Choose a username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input placeholder="Choose a username" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleRegisterFieldClick("username")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -195,7 +219,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                <Input type="password" placeholder="Create a password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input type="password" placeholder="Create a password" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleRegisterFieldClick("password")} />
                               </FormControl>
                               <FormDescription>
                                 Must be at least 8 characters
@@ -212,7 +236,7 @@ export default function AuthPage() {
                             <FormItem>
                               <FormLabel>Full Name</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your name" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" />
+                                <Input placeholder="Your name" {...field} className="border-[#D3D5D9] focus:border-[#CD1B32]" onClick={() => handleRegisterFieldClick("fullName")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -220,7 +244,7 @@ export default function AuthPage() {
                         />
                         
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="terms" required className="border-[#D3D5D9] data-[state=checked]:bg-[#CD1B32] data-[state=checked]:border-[#CD1B32]" />
+                          <Checkbox id="terms" required className="border-[#D3D5D9] data-[state=checked]:bg-[#CD1B32] data-[state=checked]:border-[#CD1B32]" onClick={() => handleRegisterFieldClick("receiveUpdates")} />
                           <label htmlFor="terms" className="text-sm text-[#5C616B]">
                             I agree to the <a href="#" className="text-[#CD1B32] hover:text-[#DD393A]">Terms of Service</a> and <a href="#" className="text-[#CD1B32] hover:text-[#DD393A]">Privacy Policy</a>
                           </label>
@@ -249,9 +273,9 @@ export default function AuthPage() {
                         <Button
                           type="submit"
                           className="w-full bg-[#CD1B32] hover:bg-[#DD393A] text-white"
-                          disabled={registerMutation.isPending}
+                          disabled={registerMutation.isLoading}
                         >
-                          {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+                          {registerMutation.isLoading ? "Creating Account..." : "Create Account"}
                         </Button>
                       </form>
                     </Form>

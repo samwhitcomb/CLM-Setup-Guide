@@ -6,6 +6,41 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Mock login function
+const mockLogin = async (credentials) => {
+  console.log('Mock login with credentials:', credentials);
+  // Simulate a successful login response
+  return {
+    user: {
+      username: credentials.username,
+      fullName: 'Mock User',
+    },
+    token: 'mock-token',
+  };
+};
+
+// Mock register function
+const mockRegister = async (credentials) => {
+  console.log('Mock register with credentials:', credentials);
+  // Simulate a successful registration response
+  return {
+    user: {
+      username: credentials.username,
+      fullName: credentials.fullName,
+    },
+    token: 'mock-token',
+  };
+};
+
+// Usage in your application
+const login = async (credentials) => {
+  return mockLogin(credentials);
+};
+
+const register = async (credentials) => {
+  return mockRegister(credentials);
+};
+
 export default defineConfig({
   plugins: [
     react(),
