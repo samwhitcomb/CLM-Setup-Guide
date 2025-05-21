@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Set the permissions that the workflow requires
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
