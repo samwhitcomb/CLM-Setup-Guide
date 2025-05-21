@@ -1,19 +1,17 @@
-import { Switch, Route } from "wouter";
-import NotFound from "@/pages/not-found";
-import HomePage from "@/pages/home-page";
-import OnboardingPage from "@/pages/onboarding-page";
+import { Route, Switch } from "wouter";
+import { OnboardingPage } from "@/pages/onboarding-page";
 import AuthPage from "@/pages/auth-page";
 import { ProtectedRoute } from "./lib/protected-route";
+import HomePage from "@/pages/home-page";
+import NotFound from "@/pages/not-found";
 
-function App() {
+export default function App() {
   return (
     <Switch>
+      <Route path="/" component={OnboardingPage} />
       <Route path="/auth" component={AuthPage} />
-      <Route path="/onboarding" component={OnboardingPage} />
       <ProtectedRoute path="/" component={HomePage} />
       <Route component={NotFound} />
     </Switch>
   );
 }
-
-export default App;

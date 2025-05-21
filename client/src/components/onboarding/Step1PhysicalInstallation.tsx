@@ -23,6 +23,7 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { Slider } from "@/components/ui/slider";
 
 export function Step1PhysicalInstallation() {
   const { goToNextStep, goToPreviousStep } = useOnboarding();
@@ -30,6 +31,9 @@ export function Step1PhysicalInstallation() {
   const [installationReviewed, setInstallationReviewed] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [roomSize, setRoomSize] = useState(200);
+  const [ceilingHeight, setCeilingHeight] = useState(8);
+  const [wallDistance, setWallDistance] = useState(2);
   
   // Define the total number of pages
   const totalPages = 2;
@@ -178,92 +182,61 @@ export function Step1PhysicalInstallation() {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 fade-in">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold">Installation Overview</h3>
-        <span className="text-xs bg-[#CD1B32]/20 text-[#CD1B32] px-2 py-1 rounded">Step 2 of 8</span>
-      </div>
-      
-      {/* Page content with fixed height to prevent layout shifts */}
-      <div className="h-[380px] overflow-y-auto pr-1 mb-2">
-        {pageContent[currentPage]}
-      </div>
-      
-      {/* Pagination controls */}
-      <div className="flex justify-center mb-3 mt-1">
-        <div className="flex items-center space-x-1">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="h-8 w-8 p-0" 
-            onClick={prevPage}
-            disabled={currentPage === 0}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          
-          {Array.from({length: totalPages}).map((_, index) => (
-            <Button
-              key={index}
-              variant={currentPage === index ? "default" : "outline"}
-              size="sm"
-              className="h-8 w-8 p-0"
-              onClick={() => setCurrentPage(index)}
-            >
-              {index + 1}
-            </Button>
-          ))}
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="h-8 w-8 p-0" 
-            onClick={nextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-      
-      <div className="flex justify-between items-center">
-        <Button
-          variant="outline"
-          onClick={goToPreviousStep}
-          className="flex items-center"
-        >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Previous Step
-        </Button>
-        <div className="flex items-center gap-6">
-          <div className="text-[#5C616B] text-sm">
-            <label className="flex items-center" htmlFor="installation-reviewed">
-              <Checkbox 
-                id="installation-reviewed" 
-                checked={installationReviewed}
-                onCheckedChange={(checked) => setInstallationReviewed(!!checked)}
-                className="mr-2 h-4 w-4"
-              />
-              <span>I've installed my device or will skip this step</span>
-            </label>
-          </div>
-          <Button 
-            onClick={handleContinue} 
-            className="bg-[#CD1B32] hover:bg-[#DD393A] text-white transition flex items-center"
-            disabled={!(currentPage === totalPages - 1 || installationReviewed)}
-          >
-            Continue to Next Step
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Room Size</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Room Size (sq ft): {roomSize}
+          </label>
+          <Slider
+            value={[roomSize]}
+            onValueChange={(value) => setRoomSize(value[0])}
+            min={100}
+            max={1000}
+            step={10}
+          />
         </div>
       </div>
 
-      {showAccountModal && (
-        <AccountModal 
-          onClose={() => setShowAccountModal(false)} 
-          onComplete={goToNextStep}
-        />
-      )}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Ceiling Height</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Height (ft): {ceilingHeight}
+          </label>
+          <Slider
+            value={[ceilingHeight]}
+            onValueChange={(value) => setCeilingHeight(value[0])}
+            min={6}
+            max={12}
+            step={0.5}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Wall Distance</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Distance (ft): {wallDistance}
+          </label>
+          <Slider
+            value={[wallDistance]}
+            onValueChange={(value) => setWallDistance(value[0])}
+            min={1}
+            max={5}
+            step={0.5}
+          />
+        </div>
+      </div>
+
+      <Button
+        onClick={handleContinue}
+        className="w-full bg-[#CD1B32] hover:bg-[#CD1B32]/90"
+      >
+        Continue to Next Step
+      </Button>
     </div>
   );
 }

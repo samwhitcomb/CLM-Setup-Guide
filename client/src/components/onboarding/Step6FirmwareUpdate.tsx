@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 
-export function Step3PowerOn() {
+export function Step6FirmwareUpdate() {
   const { goToNextStep } = useOnboarding();
   const [roomSize, setRoomSize] = useState(200);
   const [ceilingHeight, setCeilingHeight] = useState(8);
@@ -71,4 +71,4 @@ export function Step3PowerOn() {
       </Button>
     </div>
   );
-}
+} 

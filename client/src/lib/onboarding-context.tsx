@@ -6,6 +6,8 @@ type OnboardingContextType = {
   setCurrentStep: (step: number) => void;
   isComplete: boolean;
   setIsComplete: (complete: boolean) => void;
+  goToNextStep: () => void;
+  goToPreviousStep: () => void;
 };
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
@@ -21,6 +23,14 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
+  const goToNextStep = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, 7));
+  };
+
+  const goToPreviousStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
   return (
     <OnboardingContext.Provider
       value={{
@@ -28,6 +38,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         setCurrentStep,
         isComplete,
         setIsComplete,
+        goToNextStep,
+        goToPreviousStep,
       }}
     >
       {children}

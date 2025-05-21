@@ -29,6 +29,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import bracketInstallationGif from "@/assets/images/bracket-installation.gif";
 import deviceMountingGif from "@/assets/images/device-mounting.gif";
+import { Slider } from "@/components/ui/slider";
 
 type MountingType = "direct" | "pole";
 
@@ -69,6 +70,9 @@ export function Step2Installation() {
     ceilingMarked: false,
     wiringConfirmed: false
   });
+  const [roomSize, setRoomSize] = useState(200);
+  const [ceilingHeight, setCeilingHeight] = useState(8);
+  const [wallDistance, setWallDistance] = useState(2);
 
   const handleNextInstallStep = () => {
     if (installStep < 7) {
@@ -92,6 +96,10 @@ export function Step2Installation() {
 
   const totalSteps = 7;
   const progress = (installStep / totalSteps) * 100;
+
+  const handleContinue = () => {
+    goToNextStep();
+  };
 
   const renderStepContent = () => {
     switch (installStep) {
@@ -618,83 +626,61 @@ export function Step2Installation() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 fade-in">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold">Installation & Wiring</h3>
-        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Step 3 of 7</span>
-      </div>
-      
-      <div className="mb-6">
-        <div className="w-full bg-neutral-200 rounded-full h-2.5 mb-2">
-          <div 
-            className="bg-primary h-2.5 rounded-full transition-all duration-500 ease-in-out" 
-            style={{ width: `${progress}%` }}
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Room Size</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Room Size (sq ft): {roomSize}
+          </label>
+          <Slider
+            value={[roomSize]}
+            onValueChange={(value) => setRoomSize(value[0])}
+            min={100}
+            max={1000}
+            step={10}
           />
         </div>
-        <div className="flex justify-between text-xs text-neutral-500">
-          {[
-            { label: "Position", step: 1 },
-            { label: "Marking", step: 2 },
-            { label: "Wiring", step: 3 },
-            { label: "Bracket", step: 4 },
-            { label: "Cables", step: 5 },
-            { label: "Device", step: 6 }
-          ].map(({ label, step }) => (
-            <button
-              key={step}
-              onClick={() => handleStepClick(step)}
-              className={`cursor-pointer hover:text-primary transition-colors ${
-                installStep === step ? "text-primary font-medium" : ""
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Ceiling Height</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Height (ft): {ceilingHeight}
+          </label>
+          <Slider
+            value={[ceilingHeight]}
+            onValueChange={(value) => setCeilingHeight(value[0])}
+            min={6}
+            max={12}
+            step={0.5}
+          />
         </div>
       </div>
 
-      {renderStepContent()}
-
-      <div className="flex justify-between items-center">
-        {!isCompleted ? (
-          <>
-            <Button 
-              variant="outline"
-              onClick={handlePrevInstallStep}
-              disabled={installStep === 1}
-              className="flex items-center"
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Previous
-            </Button>
-          <Button 
-            onClick={handleNextInstallStep} 
-            className="bg-primary hover:bg-primary/90 text-white ml-auto flex items-center"
-          >
-              {installStep === 6 ? "Complete" : "Next"}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          </>
-        ) : (
-          <>
-            <Button 
-              variant="outline"
-              onClick={() => handleStepClick(6)}
-              className="flex items-center"
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Back to Device Mounting
-            </Button>
-            <Button 
-              onClick={goToNextStep} 
-              className="bg-[#CD1B32] hover:bg-[#CD1B32]/90 text-white flex items-center"
-            >
-              Continue to Next Step
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </>
-        )}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Wall Distance</h3>
+        <div className="space-y-2">
+          <label className="text-sm text-neutral-600">
+            Distance (ft): {wallDistance}
+          </label>
+          <Slider
+            value={[wallDistance]}
+            onValueChange={(value) => setWallDistance(value[0])}
+            min={1}
+            max={5}
+            step={0.5}
+          />
+        </div>
       </div>
+
+      <Button
+        onClick={handleContinue}
+        className="w-full bg-[#CD1B32] hover:bg-[#CD1B32]/90"
+      >
+        Continue to Next Step
+      </Button>
     </div>
   );
 }

@@ -1,25 +1,16 @@
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Router } from "wouter";
+import { OnboardingProvider } from "@/lib/onboarding-context";
 import App from "./App";
 import "./index.css";
-import { Providers } from "./providers";
-import { Router, BaseLocationHook } from "wouter";
-import React from "react";
 
-// Use hash-based routing
-const useHashLocation: BaseLocationHook = () => {
-  const [location, setLocation] = React.useState(window.location.hash.replace("#", "") || "/");
-  React.useEffect(() => {
-    const handler = () => setLocation(window.location.hash.replace("#", "") || "/");
-    window.addEventListener("hashchange", handler);
-    return () => window.removeEventListener("hashchange", handler);
-  }, []);
-  return [location, (to: string) => (window.location.hash = to)];
-};
-
-createRoot(document.getElementById("root")!).render(
-  <Router hook={useHashLocation}>
-    <Providers>
-      <App />
-    </Providers>
-  </Router>
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <Router>
+      <OnboardingProvider>
+        <App />
+      </OnboardingProvider>
+    </Router>
+  </React.StrictMode>
 );

@@ -6,55 +6,57 @@ import { Step0RoomPreparation } from "@/components/onboarding/Step0RoomPreparati
 import { Step1PhysicalInstallation } from "@/components/onboarding/Step1PhysicalInstallation";
 import { Step2Installation } from "@/components/onboarding/Step2Installation";
 import { Step3PowerOn } from "@/components/onboarding/Step3PowerOn";
-import { Step5ConnectDevice } from "@/components/onboarding/Step5ConnectDevice";
-import { Step6BindDevice } from "@/components/onboarding/Step6BindDevice";
-import { Step7Firmware } from "@/components/onboarding/Step7Firmware";
-import { Step8Calibration } from "@/components/onboarding/Step8Calibration";
+import { Step4ConnectDevice } from "@/components/onboarding/Step4ConnectDevice";
+import { Step5BindDevice } from "@/components/onboarding/Step5BindDevice";
+import { Step6FirmwareUpdate } from "@/components/onboarding/Step6FirmwareUpdate";
+import { Step7Calibration } from "@/components/onboarding/Step7Calibration";
 import { Progress } from "@/components/ui/progress";
 
-export default function OnboardingPage() {
+export function OnboardingPage() {
   const { currentStep } = useOnboarding();
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1:
+      case 0:
         return <Step0RoomPreparation />;
-      case 2:
+      case 1:
         return <Step1PhysicalInstallation />;
-      case 3:
+      case 2:
         return <Step2Installation />;
-      case 4:
+      case 3:
         return <Step3PowerOn />;
+      case 4:
+        return <Step4ConnectDevice />;
       case 5:
-        return <Step5ConnectDevice />;
+        return <Step5BindDevice />;
       case 6:
-        return <Step6BindDevice />;
+        return <Step6FirmwareUpdate />;
       case 7:
-        return <Step7Firmware />;
-      case 8:
-        return <Step8Calibration />;
+        return <Step7Calibration />;
       default:
         return <Step0RoomPreparation />;
     }
   };
 
-  const progress = (currentStep / 8) * 100;
+  const progress = ((currentStep + 1) / 8) * 100;
 
   return (
     <div className="min-h-screen bg-neutral-50">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8">
+      <main className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row gap-8">
           <StepSidebar />
-          <div className="space-y-4">
-            <Progress
-              value={progress}
-              className="h-2 bg-[#DCF0A4]/20 [&>div]:bg-[#BCD879]"
-            />
-            {renderStep()}
+          <div className="flex-1">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <Progress
+                value={progress}
+                className="h-2 bg-[#DCF0A4]/20 [&>div]:bg-[#BCD879]"
+              />
+              {renderStep()}
+            </div>
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
     </div>
   );

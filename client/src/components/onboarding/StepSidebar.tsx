@@ -9,53 +9,53 @@ type StepInfo = {
 };
 
 export function StepSidebar() {
-  const { currentStep, setStep } = useOnboarding();
+  const { currentStep, setCurrentStep } = useOnboarding();
   
   const steps: StepInfo[] = [
     { 
-      number: 1, 
+      number: 0, 
       title: "Room Preparation", 
       description: "Measure and prepare your space",
       stage: "Physical Installation"
     },
     { 
-      number: 2, 
+      number: 1, 
       title: "Installation Overview", 
       description: "Review requirements and tools",
       stage: "Physical Installation"
     },
     { 
-      number: 3, 
+      number: 2, 
       title: "Installation & Wiring", 
       description: "Mount and connect",
       stage: "Physical Installation"
     },
     { 
-      number: 4, 
+      number: 3, 
       title: "Power On", 
       description: "Activate device",
       stage: "Device Setup"
     },
     { 
-      number: 5, 
+      number: 4, 
       title: "Connect Device", 
       description: "Link to app",
       stage: "Device Setup"
     },
     { 
-      number: 6, 
+      number: 5, 
       title: "Bind Device", 
       description: "Secure to account",
       stage: "Device Setup"
     },
     { 
-      number: 7, 
+      number: 6, 
       title: "Firmware Update", 
       description: "Install latest software",
       stage: "Device Setup"
     },
     { 
-      number: 8, 
+      number: 7, 
       title: "Calibration", 
       description: "Optimize accuracy",
       stage: "Device Setup"
@@ -84,7 +84,7 @@ export function StepSidebar() {
               {stageSteps.map((step) => (
                 <div
                   key={step.number}
-                  onClick={() => setStep(step.number)}
+                  onClick={() => setCurrentStep(step.number)}
                   className={cn(
                     "p-3 rounded-lg cursor-pointer transition-colors",
                     currentStep === step.number
@@ -101,7 +101,7 @@ export function StepSidebar() {
                           : "bg-neutral-200 text-neutral-600"
                       )}
                     >
-                      {step.number}
+                      {step.number + 1}
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{step.title}</h4>
